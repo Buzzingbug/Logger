@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "postinstall": "npm run build --workspace=@logger/shared && npm run build --workspace=@logger/db",
     "dev:bot": "npm run dev --workspace=@logger/bot",
     "dev:dashboard": "npm run dev --workspace=@logger/dashboard",
     "build": "npm run build --workspaces --if-present"
