@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build",
+    "build": "next build",
     "prestart": "npm run db:push --workspace=@logger/db",
     "start": "next start",
     "lint": "eslint"
