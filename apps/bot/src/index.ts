@@ -61,6 +61,20 @@ client.once('ready', async () => {
   } catch (error) {
     console.error('Failed to register application commands:', error);
   }
+
+  // Sync guilds to ensure database has records for servers the bot is already in
+  try {
+    for (const guild of client.guilds.cache.values()) {
+      await prisma.guildConfig.upsert({
+        where: { guildId: guild.id },
+        update: {},
+        create: { guildId: guild.id }
+      });
+    }
+    console.log(`Synced ${client.guilds.cache.size} guilds to database.`);
+  } catch (error) {
+    console.error('Failed to sync guilds:', error);
+  }
 });
 
 client.login(process.env.DISCORD_TOKEN);
