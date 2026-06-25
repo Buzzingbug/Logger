@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { DashboardLayout } from '../../../../components/DashboardLayout';
-import { CategoryCard } from '../../../../components/CategoryCard';
-import { Select } from '../../../../components/Select';
+import { DashboardLayout } from '../../../components/DashboardLayout';
+import { CategoryCard } from '../../../components/CategoryCard';
+import { Select } from '../../../components/Select';
 import { EVENT_CATEGORIES, GuildConfig } from '@logger/shared';
 import { Shield, User, MessageSquare, Mic, Activity, File, Server, ShieldCheck, Hash, Settings } from 'lucide-react';
 

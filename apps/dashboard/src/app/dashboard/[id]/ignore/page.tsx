@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { DashboardLayout } from '../../../../components/DashboardLayout';
-import { Toggle } from '../../../../components/Toggle';
+import { DashboardLayout } from '../../../components/DashboardLayout';
+import { Toggle } from '../../../components/Toggle';
 import { GuildConfig } from '@logger/shared';
 import { Users, Target, Hash, FolderOpen, MessageSquare, Shield, ShieldCheck, Bot } from 'lucide-react';
 

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { DashboardLayout } from '../../../../components/DashboardLayout';
-import { Toggle } from '../../../../components/Toggle';
-import { Select } from '../../../../components/Select';
+import { DashboardLayout } from '../../../components/DashboardLayout';
+import { Toggle } from '../../../components/Toggle';
+import { Select } from '../../../components/Select';
 import { GuildConfig } from '@logger/shared';
 
 function useDebounce<T>(value: T, delay: number): T {

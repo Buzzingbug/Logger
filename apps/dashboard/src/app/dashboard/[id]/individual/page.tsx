@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DashboardLayout } from '../../../../components/DashboardLayout';
+import { DashboardLayout } from '../../../components/DashboardLayout';
 
 export default function IndividualOptionsPage({ params }: { params: Promise<{ id: string }> }) {
   const [guildId, setGuildId] = React.useState<string>('');
