@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../lib/auth';
+import { authOptions } from '../../../../../lib/auth';
 import { prisma, redis } from '@logger/db';
 import { GuildConfig } from '@logger/shared';
 

@@ -46,7 +46,7 @@ export class EventRegistry {
         // We expect the file to export a 'default' containing the EventHandler
         const handler: EventHandler<any> = eventModule.default;
         
-        if (handler && handler.name && handler.execute) {
+        if (handler && handler.name && typeof handler.execute === 'function') {
           this.register(handler);
           loadedCount++;
         } else {
