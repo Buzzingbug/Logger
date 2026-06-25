@@ -10,6 +10,7 @@
     "postinstall": "npm run build --workspace=@logger/shared && npm run build --workspace=@logger/db",
     "dev:bot": "npm run dev --workspace=@logger/bot",
     "dev:dashboard": "npm run dev --workspace=@logger/dashboard",
+    "start": "concurrently \"npm run start --workspace=@logger/dashboard\" \"npm run start --workspace=@logger/bot\" \"npm run start --workspace=@logger/files\"",
     "build": "npm run build --workspaces --if-present"
   },
   "devDependencies": {
