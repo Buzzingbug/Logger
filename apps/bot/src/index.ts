@@ -1,4 +1,4 @@
-import { GatewayIntentBits } from 'discord.js';
+import { GatewayIntentBits, REST, Routes, SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
 import 'dotenv/config';
 import { prisma, redis } from '@logger/db';
 import { LoggerClient } from './client/LoggerClient';
@@ -37,6 +37,30 @@ client.once('ready', async () => {
 
   // Load events
   await eventRegistry.loadAllEvents();
+
+  // Register commands
+  const commands = [
+    new SlashCommandBuilder()
+      .setName('ping')
+      .setDescription('Check bot, database, and Redis latency')
+      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    new SlashCommandBuilder()
+      .setName('dashboard')
+      .setDescription('Get a link to the logger dashboard')
+      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+  ];
+
+  try {
+    const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
+    console.log('Started refreshing application (/) commands.');
+    await rest.put(
+      Routes.applicationCommands(client.user!.id),
+      { body: commands }
+    );
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error('Failed to register application commands:', error);
+  }
 });
 
 client.login(process.env.DISCORD_TOKEN);
