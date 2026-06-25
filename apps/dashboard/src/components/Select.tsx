@@ -36,26 +36,26 @@ export function Select({ options, value, onChange, placeholder = 'Select...', cl
       <button
         type="button"
         disabled={disabled}
-        className={`w-full flex items-center justify-between bg-[#1a1a1f] border ${isOpen ? 'border-[#c336c3]' : 'border-[#3a3a45]'} text-[#e8e8ed] text-sm rounded-xl px-4 py-2.5 outline-none hover:border-[#c336c3]/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`w-full flex items-center justify-between bg-[#141419] border ${isOpen ? 'border-[#9f2ba0]' : 'border-[#2c2c35]'} text-[#c4c4cc] text-sm rounded-lg px-3 py-2 outline-none hover:border-[#9f2ba0]/50 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
         <span className={selectedOption ? 'text-[#e8e8ed]' : 'text-[#8b8b99]'}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDown size={16} className={`text-[#8b8b99] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown size={14} className={`text-[#8b8b99] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 w-full mt-2 bg-[#1a1a1f] border border-[#3a3a45] rounded-xl shadow-xl max-h-60 overflow-y-auto overscroll-contain animate-in fade-in slide-in-from-top-2">
+        <div className="absolute z-50 w-full mt-1 bg-[#141419] border border-[#2c2c35] rounded-lg shadow-xl max-h-60 overflow-y-auto overscroll-contain animate-in fade-in zoom-in-95">
           {options.length === 0 ? (
-            <div className="px-4 py-3 text-sm text-[#8b8b99] text-center">No options available</div>
+            <div className="px-3 py-2 text-sm text-[#8b8b99] text-center">No options available</div>
           ) : (
             <ul className="py-1">
               {options.map((opt) => (
                 <li
                   key={opt.value}
-                  className={`px-4 py-2 text-sm flex items-center justify-between cursor-pointer hover:bg-[#c336c3]/10 transition-colors ${
-                    value === opt.value ? 'text-[#c336c3] bg-[#c336c3]/5' : 'text-[#e8e8ed]'
+                  className={`px-3 py-1.5 text-sm flex items-center justify-between cursor-pointer transition-colors ${
+                    value === opt.value ? 'text-[#9f2ba0] bg-[#9f2ba0]/10' : 'text-[#c4c4cc] hover:bg-[#2c2c35]'
                   }`}
                   onClick={() => {
                     onChange(opt.value);

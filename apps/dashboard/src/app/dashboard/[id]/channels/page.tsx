@@ -17,16 +17,16 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 const CATEGORY_META: Record<string, { title: string, desc: string, icon: React.ReactNode }> = {
-  Modlogs: { title: 'Modlogs', desc: 'Redirect all modlogs to a different channel, or disable these logs entirely', icon: <Shield size={20} /> },
-  Members: { title: 'Members', desc: 'Redirect all member logs to a different channel, or disable these logs entirely', icon: <User size={20} /> },
-  Messages: { title: 'Messages', desc: 'Redirect all message logs to a different channel, or disable these logs entirely', icon: <MessageSquare size={20} /> },
-  Voice: { title: 'Voice', desc: 'Redirect all voice events logs to a different channel, or disable these logs entirely', icon: <Mic size={20} /> },
-  Actions: { title: 'Actions', desc: 'Redirect all server action logs to a different channel, or disable these logs entirely', icon: <Activity size={20} /> },
-  Files: { title: 'Files', desc: 'Redirect all file logs to a different channel, or disable these logs entirely', icon: <File size={20} /> },
-  Server: { title: 'Server', desc: 'Redirect all server update logs to a different channel, or disable these logs entirely', icon: <Server size={20} /> },
-  Roles: { title: 'Roles', desc: 'Redirect all role creation/edited/deletion logs to a different channel, or disable these logs entirely', icon: <ShieldCheck size={20} /> },
-  Channels: { title: 'Channels', desc: 'Redirect all channel creation/edited/deletion logs to a different channel, or disable these logs entirely', icon: <Hash size={20} /> },
-  Internal: { title: 'Logger Events', desc: 'Redirect all Logger internal events to a different channel, or disable these logs entirely', icon: <Settings size={20} /> },
+  Modlogs: { title: 'Modlogs', desc: 'Log moderative actions like bans, kicks, and timeouts.', icon: <Shield size={20} /> },
+  Members: { title: 'Members', desc: 'Log member joins, leaves, and profile updates.', icon: <User size={20} /> },
+  Messages: { title: 'Messages', desc: 'Log message edits, deletions, and pinned messages.', icon: <MessageSquare size={20} /> },
+  Voice: { title: 'Voice', desc: 'Log voice channel joins, leaves, and activity.', icon: <Mic size={20} /> },
+  Actions: { title: 'Actions', desc: 'Log server action events.', icon: <Activity size={20} /> },
+  Files: { title: 'Files', desc: 'Log file uploads and deletions.', icon: <File size={20} /> },
+  Server: { title: 'Server', desc: 'Log server property updates.', icon: <Server size={20} /> },
+  Roles: { title: 'Roles', desc: 'Log role creation, edits, and deletions.', icon: <ShieldCheck size={20} /> },
+  Channels: { title: 'Channels', desc: 'Log channel creation, edits, and deletions.', icon: <Hash size={20} /> },
+  Internal: { title: 'Logger Events', desc: 'Log internal Logger system events.', icon: <Settings size={20} /> },
 };
 
 export default function ChannelsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -101,26 +101,24 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
 
   return (
     <DashboardLayout guildId={guildId}>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2">CHANNELS</h2>
-          <p className="text-[#8b8b99] text-sm">Set the main serverlog channel and category overrides</p>
-        </div>
-        <div className="h-6">
-          {savedStatus === 'saving' && <span className="text-[#FEE75C] text-sm font-bold">Saving...</span>}
-          {savedStatus === 'saved' && <span className="text-[#57F287] text-sm font-bold">Saved ✓</span>}
-        </div>
+      <div className="mb-4">
+        <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2">CHANNELS</h2>
+        <p className="text-[#8b8b99] text-sm">Configure channel-specific logging settings for different server activities.</p>
+      </div>
+      
+      <div className="flex justify-end mb-6 h-6">
+        {savedStatus === 'saving' && <span className="text-[#FEE75C] text-sm font-bold">Saving...</span>}
+        {savedStatus === 'saved' && <span className="text-[#57F287] text-sm font-bold">Saved ✓</span>}
       </div>
 
-      <div className="bg-[#1a1a1f] p-8 rounded-2xl border border-[#3a3a45]">
-        <div className="mb-10 pb-10 border-b border-[#3a3a45]">
-          <h3 className="text-lg font-bold text-white mb-4">Main Serverlog Channel</h3>
+      <div className="flex flex-col">
+        <div className="bg-[#1c1c22] border border-[#2c2c35] p-5 rounded-xl mb-4 transition-colors hover:border-[#9f2ba0]/40">
+          <h3 className="text-lg font-semibold text-[#e8e8ed] mb-3">Main Serverlog Channel</h3>
           <Select 
             value={config.channelRoutes['main'] || ''} 
             onChange={val => handleChannelChange('main', val)}
             options={channelOptions} 
             placeholder="Select channel"
-            className="max-w-md"
           />
         </div>
 

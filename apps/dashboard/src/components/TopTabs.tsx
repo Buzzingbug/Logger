@@ -14,16 +14,16 @@ export function TopTabs({ guildId }: { guildId: string }) {
   ];
 
   return (
-    <div className="flex gap-2 border border-[#3a3a45] rounded-2xl p-1.5 bg-[#1a1a1f] mb-8 overflow-x-auto w-max max-w-full shadow-sm">
+    <div className="flex bg-[#1c1c22] border border-[#2c2c35] rounded-lg mb-8 overflow-hidden shadow-sm">
       {tabs.map((tab) => {
         const isActive = pathname === tab.path;
         return (
           <Link
             key={tab.name}
             href={tab.path}
-            className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap flex items-center justify-center ${
+            className={`flex-1 px-4 py-3 text-sm font-semibold transition-colors flex items-center justify-center border-r border-[#2c2c35] last:border-r-0 ${
               isActive
-                ? 'bg-[#c336c3] text-white shadow-md'
+                ? 'bg-[#8a2571] text-white shadow-inner'
                 : 'text-[#8b8b99] hover:text-[#e8e8ed] hover:bg-[#26262d]'
             }`}
           >

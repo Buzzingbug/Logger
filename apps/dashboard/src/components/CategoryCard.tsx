@@ -13,25 +13,25 @@ interface CategoryCardProps {
 
 export function CategoryCard({ title, description, enabled, onToggle, icon, children }: CategoryCardProps) {
   return (
-    <div className="border border-[#3a3a45] bg-[#1a1a1f] p-5 rounded-xl mb-3 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors hover:border-[#c336c3]/40">
-      <div className="flex items-start gap-4 flex-1">
-        <div className="mt-0.5">
+    <div className="bg-[#1c1c22] border border-[#2c2c35] p-5 rounded-xl mb-4 flex justify-between items-center transition-colors hover:border-[#9f2ba0]/40">
+      <div className="flex flex-col flex-1 pr-4">
+        <h3 className="flex items-center gap-3 text-lg font-semibold text-[#e8e8ed] mb-1">
+          {icon && <span className="text-[#8b8b99]">{icon}</span>}
+          {title}
+        </h3>
+        <p className="text-sm text-[#8b8b99]">{description}</p>
+      </div>
+      <div className="flex flex-col items-end gap-2 w-56 flex-shrink-0">
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-[#c4c4cc] font-medium">{enabled ? 'On' : 'Off'}</span>
           <Toggle checked={enabled} onChange={onToggle} />
         </div>
-        <div className="flex-1">
-          <h3 className="flex items-center gap-2 text-lg font-bold text-[#e8e8ed]">
-            {icon && <span className="text-[#c336c3]">{icon}</span>}
-            {title}
-            <Info className="w-4 h-4 text-[#8b8b99] hover:text-[#e8e8ed] transition-colors cursor-help" />
-          </h3>
-          <p className="text-sm text-[#8b8b99] mt-1">{description}</p>
-        </div>
+        {children && (
+          <div className="w-full mt-1">
+            {children}
+          </div>
+        )}
       </div>
-      {children && (
-        <div className="w-full sm:w-72 mt-3 sm:mt-0 flex-shrink-0">
-          {children}
-        </div>
-      )}
     </div>
   );
 }
