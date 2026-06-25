@@ -14,8 +14,8 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
             Logger.
           </Link>
           <div className="h-6 w-px bg-[#27272a]" />
-          <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-[#3b82f6]/20 to-transparent border border-[#3b82f6]/30">
-            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3b82f6] animate-pulse" />
+          <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-full bg-[#18181b] border border-[#3b82f6]/30">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] animate-pulse" />
             <span className="text-xs sm:text-sm font-semibold text-[#3b82f6]">Logger Pro</span>
           </div>
         </div>
