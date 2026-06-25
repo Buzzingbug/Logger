@@ -2,23 +2,38 @@
 @source "../";
 
 :root {
-  /* Premium Zinc Theme (Cockpit Dense) */
+  /* Premium Dark Mode Theme */
   --color-bg:        #09090b; /* Abyss Base */
   --color-surface:   #18181b; /* Matte Surface */
   --color-surface-2: #27272a; /* Elevated */
-  --color-surface-3: #3f3f46;
   --color-border:    #27272a; /* Whisper Border */
-  --color-text:      #e4e4e7; /* Charcoal Ink */
+  --color-border-glow: rgba(59, 130, 246, 0.3);
+  --color-text:      #e4e4e7; /* Charcoal Ink (Inverse) */
   --color-text-muted:#a1a1aa; /* Muted Steel */
-  --color-accent:    #3b82f6; /* Muted Cobalt */
-  --color-success:   #22c55e;
-  --color-danger:    #ef4444;
-  --color-warning:   #eab308;
+  --color-accent:    #3b82f6; /* Accent Cobalt */
+  --color-accent-glow: rgba(59, 130, 246, 0.15);
+  
+  --font-geist-sans: "Geist", sans-serif;
+  --font-geist-mono: "Geist Mono", monospace;
 }
 
 @theme {
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-border: var(--color-border);
+  --color-border-glow: var(--color-border-glow);
+  --color-text-muted: var(--color-text-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-glow: var(--color-accent-glow);
+}
+
+/* Premium Spring Physics Transitions */
+.spring-transition {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition-duration: 300ms;
 }
 
 * {
@@ -30,6 +45,15 @@
 body {
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar hiding for clean UI */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

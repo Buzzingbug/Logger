@@ -36,26 +36,26 @@ export function Select({ options, value, onChange, placeholder = 'Select...', cl
       <button
         type="button"
         disabled={disabled}
-        className={`w-full flex items-center justify-between bg-[#09090b]/80 backdrop-blur-sm border ${isOpen ? 'border-[#3b82f6] shadow-[0_0_10px_rgba(59,130,246,0.2)]' : 'border-[#27272a]'} text-[#e4e4e7] text-sm rounded-lg px-3.5 py-2.5 outline-none hover:border-[#3b82f6]/50 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`w-full flex items-center justify-between bg-bg/80 backdrop-blur-md border ${isOpen ? 'border-accent shadow-[0_0_15px_var(--color-accent-glow)]' : 'border-border'} text-text text-sm rounded-xl px-4 py-2.5 outline-none hover:border-accent/50 spring-transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
-        <span className={`block truncate ${selectedOption ? 'text-[#e4e4e7]' : 'text-[#a1a1aa]'}`}>
+        <span className={`block truncate font-medium ${selectedOption ? 'text-text' : 'text-text-muted'}`}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDown size={16} className={`text-[#a1a1aa] transition-transform duration-200 flex-shrink-0 ml-2 ${isOpen ? 'rotate-180 text-[#e4e4e7]' : ''}`} />
+        <ChevronDown size={16} className={`text-text-muted spring-transition flex-shrink-0 ml-2 ${isOpen ? 'rotate-180 text-text' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute z-[100] w-full mt-1.5 bg-[#18181b]/95 backdrop-blur-md border border-[#27272a] rounded-lg shadow-2xl max-h-60 overflow-y-auto overscroll-contain animate-in fade-in zoom-in-95 origin-top">
+        <div className="absolute z-[100] w-full mt-2 bg-surface/95 backdrop-blur-xl border border-border rounded-xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] max-h-60 overflow-y-auto overscroll-contain animate-in fade-in slide-in-from-top-2 duration-200 no-scrollbar p-1">
           {options.length === 0 ? (
-            <div className="px-3 py-3 text-sm text-[#a1a1aa] text-center">No options available</div>
+            <div className="px-4 py-3 text-sm text-text-muted text-center">No options available</div>
           ) : (
-            <ul className="py-1">
+            <ul className="flex flex-col gap-0.5">
               {options.map((opt) => (
                 <li
                   key={opt.value}
-                  className={`px-3 py-2 text-sm flex items-center justify-between cursor-pointer transition-colors mx-1 rounded-md ${
-                    value === opt.value ? 'text-[#3b82f6] bg-[#3b82f6]/10 font-medium' : 'text-[#e4e4e7] hover:bg-[#27272a]'
+                  className={`px-3 py-2.5 text-sm flex items-center justify-between cursor-pointer spring-transition rounded-lg ${
+                    value === opt.value ? 'text-accent bg-accent/10 font-medium' : 'text-text hover:bg-surface-2'
                   }`}
                   onClick={() => {
                     onChange(opt.value);

@@ -62,7 +62,7 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
     });
   }, [debouncedConfig, guildId]);
 
-  if (!config) return <div className="text-white text-center mt-20">Loading configuration...</div>;
+  if (!config) return <div className="text-text text-center mt-20 animate-pulse font-medium">Loading configuration...</div>;
 
   const channelOptions = channels.map(c => ({ value: c.id, label: `# ${c.name}` }));
 
@@ -101,19 +101,22 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
 
   return (
     <DashboardLayout guildId={guildId}>
-      <div className="mb-4">
-        <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2">CHANNELS</h2>
-        <p className="text-[#8b8b99] text-sm">Configure channel-specific logging settings for different server activities.</p>
+      <div className="mb-6 md:mb-8">
+        <h2 className="text-2xl sm:text-3xl font-black text-text uppercase tracking-tight mb-2">Channels Configuration</h2>
+        <p className="text-text-muted text-sm sm:text-base max-w-2xl">Configure channel-specific logging settings for different server activities. Events will be logged to these channels when they occur.</p>
       </div>
       
-      <div className="flex justify-end mb-6 h-6">
-        {savedStatus === 'saving' && <span className="text-[#FEE75C] text-sm font-bold">Saving...</span>}
-        {savedStatus === 'saved' && <span className="text-[#57F287] text-sm font-bold">Saved ✓</span>}
+      <div className="flex justify-end mb-6 h-6 items-center">
+        {savedStatus === 'saving' && <span className="text-warning text-sm font-bold animate-pulse flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-warning"></div> Saving changes...</span>}
+        {savedStatus === 'saved' && <span className="text-success text-sm font-bold flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-success"></div> All changes saved</span>}
       </div>
 
       <div className="flex flex-col">
-        <div className="bg-[#18181b]/50 border border-[#27272a] p-4 sm:p-5 md:p-6 rounded-xl mb-8 transition-all hover:bg-[#18181b] hover:border-[#3b82f6]/40 group">
-          <h3 className="text-base sm:text-lg font-semibold text-[#e4e4e7] mb-3">Main Serverlog Channel</h3>
+        <div className="bg-surface/40 backdrop-blur-xl border border-border p-4 sm:p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:bg-surface/80 hover:border-accent/30 group">
+          <h3 className="text-base sm:text-lg font-semibold text-text mb-3 flex items-center gap-2">
+            <span className="w-2 h-6 bg-accent rounded-full hidden sm:block"></span>
+            Main Serverlog Channel
+          </h3>
           <Select 
             value={config.channelRoutes['main'] || ''} 
             onChange={val => handleChannelChange('main', val)}

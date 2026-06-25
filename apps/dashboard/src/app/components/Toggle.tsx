@@ -12,9 +12,9 @@ export function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
   return (
     <button
       type="button"
-      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+      className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full spring-transition focus:outline-none border ${
         disabled ? 'opacity-50 cursor-not-allowed' : ''
-      } ${checked ? 'bg-[#3b82f6]' : 'bg-[#27272a]'}`}
+      } ${checked ? 'bg-accent border-accent shadow-[0_0_12px_var(--color-accent-glow)]' : 'bg-surface-2 border-border hover:bg-surface-3'}`}
       role="switch"
       aria-checked={checked}
       onClick={() => {
@@ -23,8 +23,8 @@ export function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
     >
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all duration-200 ease-in-out ${
-          checked ? 'left-[22px]' : 'left-0.5'
+        className={`pointer-events-none absolute top-[1px] h-[20px] w-[20px] rounded-full bg-white spring-transition shadow-sm ${
+          checked ? 'left-[21px]' : 'left-[1px]'
         }`}
       />
     </button>
