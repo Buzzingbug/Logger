@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart": "npm run db:push --workspace=@logger/db",
     "start": "next start",
     "lint": "eslint"
   },
