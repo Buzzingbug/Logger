@@ -14,7 +14,7 @@ export function Toggle({ checked, onChange, disabled = false }: ToggleProps) {
       type="button"
       className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-all duration-200 ease-in-out focus:outline-none ${
         disabled ? 'opacity-50 cursor-not-allowed' : ''
-      } ${checked ? 'bg-[#9f2ba0] shadow-[0_0_12px_rgba(159,43,160,0.6)]' : 'bg-[#2b2b36]'}`}
+      } ${checked ? 'bg-[#3b82f6]' : 'bg-[#27272a]'}`}
       role="switch"
       aria-checked={checked}
       onClick={() => {

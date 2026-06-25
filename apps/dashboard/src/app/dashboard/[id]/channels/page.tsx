@@ -112,8 +112,8 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
       </div>
 
       <div className="flex flex-col">
-        <div className="bg-[#1c1c22] border border-[#2c2c35] p-5 rounded-xl mb-4 transition-colors hover:border-[#9f2ba0]/40">
-          <h3 className="text-lg font-semibold text-[#e8e8ed] mb-3">Main Serverlog Channel</h3>
+        <div className="bg-[#18181b] border border-[#27272a] p-5 rounded-xl mb-4 transition-colors hover:border-[#3b82f6]/40">
+          <h3 className="text-lg font-semibold text-[#e4e4e7] mb-3">Main Serverlog Channel</h3>
           <Select 
             value={config.channelRoutes['main'] || ''} 
             onChange={val => handleChannelChange('main', val)}

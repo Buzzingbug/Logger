@@ -2,18 +2,18 @@
 @source "../components";
 
 :root {
-  /* Dark theme (default — matches Discord) */
-  --color-bg:        #0f0f11;
-  --color-surface:   #1a1a1f;
-  --color-surface-2: #26262d;
-  --color-surface-3: #2f2f38;
-  --color-border:    #3a3a45;
-  --color-text:      #e8e8ed;
-  --color-text-muted:#8b8b99;
-  --color-accent:    #c336c3;  /* Brand color */
-  --color-success:   #57F287;
-  --color-danger:    #ED4245;
-  --color-warning:   #FEE75C;
+  /* Premium Zinc Theme (Cockpit Dense) */
+  --color-bg:        #09090b; /* Abyss Base */
+  --color-surface:   #18181b; /* Matte Surface */
+  --color-surface-2: #27272a; /* Elevated */
+  --color-surface-3: #3f3f46;
+  --color-border:    #27272a; /* Whisper Border */
+  --color-text:      #e4e4e7; /* Charcoal Ink */
+  --color-text-muted:#a1a1aa; /* Muted Steel */
+  --color-accent:    #3b82f6; /* Muted Cobalt */
+  --color-success:   #22c55e;
+  --color-danger:    #ef4444;
+  --color-warning:   #eab308;
 }
 
 @theme {
