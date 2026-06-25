@@ -8,17 +8,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  // Wait for params in Next.js 15+
   const { id: guildId } = await params;
 
-  // In a real app, verify via Discord API that the user has 'Manage Server' in this guild!
-  
   let config = await prisma.guildConfig.findUnique({
     where: { guildId }
   });
 
   if (!config) {
-    // Return default config
     return NextResponse.json({
       guildId,
       enabledEvents: [],
@@ -26,8 +22,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       ignoreExecutorUsers: [],
       ignoreRoles: [],
       ignoreChannels: [],
+      ignoreCategories: [],
+      ignoreMessageContent: [],
+      ignoreExecutorRoles: [],
+      ignoreBotExecutors: false,
+      ignoreBotTargets: false,
       channelRoutes: {},
-      embedColors: {}
+      embedColors: {},
+      otherOptions: {}
     });
   }
 
@@ -41,8 +43,6 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
   const { id: guildId } = await params;
   const body: Partial<GuildConfig> = await req.json();
 
-  // In a real app, verify user has 'Manage Server'
-
   const config = await prisma.guildConfig.upsert({
     where: { guildId },
     update: {
@@ -51,8 +51,14 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
       ignoreExecutorUsers: body.ignoreExecutorUsers,
       ignoreRoles: body.ignoreRoles,
       ignoreChannels: body.ignoreChannels,
+      ignoreCategories: body.ignoreCategories,
+      ignoreMessageContent: body.ignoreMessageContent,
+      ignoreExecutorRoles: body.ignoreExecutorRoles,
+      ignoreBotExecutors: body.ignoreBotExecutors,
+      ignoreBotTargets: body.ignoreBotTargets,
       channelRoutes: body.channelRoutes,
       embedColors: body.embedColors,
+      otherOptions: body.otherOptions,
     },
     create: {
       guildId,
@@ -61,12 +67,17 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
       ignoreExecutorUsers: body.ignoreExecutorUsers || [],
       ignoreRoles: body.ignoreRoles || [],
       ignoreChannels: body.ignoreChannels || [],
+      ignoreCategories: body.ignoreCategories || [],
+      ignoreMessageContent: body.ignoreMessageContent || [],
+      ignoreExecutorRoles: body.ignoreExecutorRoles || [],
+      ignoreBotExecutors: body.ignoreBotExecutors || false,
+      ignoreBotTargets: body.ignoreBotTargets || false,
       channelRoutes: body.channelRoutes || {},
       embedColors: body.embedColors || {},
+      otherOptions: body.otherOptions || {},
     }
   });
 
-  // Invalidate Redis cache so the bot instantly picks up changes
   await redis.del(`config:${guildId}`);
 
   return NextResponse.json({ success: true, config });

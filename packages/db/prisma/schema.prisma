@@ -14,12 +14,21 @@ model GuildConfig {
   ignoreExecutorUsers String[]
   ignoreRoles         String[]
   ignoreChannels      String[]
+  ignoreCategories    String[]
+  ignoreMessageContent String[]
+  ignoreExecutorRoles  String[]
+  
+  ignoreBotExecutors  Boolean  @default(false)
+  ignoreBotTargets    Boolean  @default(false)
   
   // JSON field to store { [eventIdOrCategory]: channelId }
   channelRoutes       Json     @default("{}")
   
   // JSON field to store { [category]: hexColor }
   embedColors         Json     @default("{}")
+
+  // Additional options like Format, Spoilers, BotIntegrations
+  otherOptions        Json     @default("{}")
 
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt

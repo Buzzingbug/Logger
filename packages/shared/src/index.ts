@@ -28,8 +28,14 @@ export interface GuildConfig {
   ignoreExecutorUsers: string[];
   ignoreRoles: string[];
   ignoreChannels: string[];
+  ignoreCategories: string[];
+  ignoreMessageContent: string[];
+  ignoreExecutorRoles: string[];
+  ignoreBotExecutors: boolean;
+  ignoreBotTargets: boolean;
   channelRoutes: Record<string, string>; // category/eventId -> channelId
   embedColors: Record<string, number>; // category -> color
+  otherOptions: Record<string, any>;
 }
 
 export interface LogEvent {
