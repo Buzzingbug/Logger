@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../components";
 
 :root {
   /* Dark theme (default — matches Discord) */

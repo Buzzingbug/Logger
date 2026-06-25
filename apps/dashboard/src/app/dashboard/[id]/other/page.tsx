@@ -91,32 +91,29 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
           <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-2">BUTTONS</h3>
           <p className="text-sm text-[#8b8b99] mb-4">Toggle which buttons are included with each log</p>
           <Select 
-            value={getOther('buttons', 'default')}
-            onChange={e => updateOther('buttons', e.target.value)}
+            value={getOther('buttons', 'all')} 
+            onChange={val => updateOther('buttons', val)}
             options={[
-              { value: 'default', label: 'User ID, Support Server' },
-              { value: 'customise', label: 'Customise...' },
+              { value: 'all', label: 'All Event Buttons' },
+              { value: 'none', label: 'No Event Buttons' },
+              { value: 'important', label: 'Important Only' }
             ]}
-            className="max-w-md"
           />
         </div>
 
-        {/* FORMAT */}
-        <div className="border-b border-[#3a3a45] pb-8 mb-8">
-          <h3 className="flex items-center gap-3 text-lg font-bold text-white uppercase tracking-widest mb-2">
-            FORMAT
-            <span className="text-[10px] font-black uppercase tracking-wider bg-white/10 text-white px-2 py-0.5 rounded">Pro Lite</span>
-          </h3>
-          <p className="text-sm text-[#8b8b99] mb-4">Choose how logs are displayed</p>
+        <div className="border border-[#3a3a45] bg-[#1a1a1f] p-5 rounded-xl mb-3 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors">
+          <div className="flex-1">
+            <h3 className="flex items-center gap-2 text-lg font-bold text-[#e8e8ed]">Embed Format</h3>
+            <p className="text-sm text-[#8b8b99] mt-1">Change the visual style of log embeds</p>
+          </div>
           <Select 
-            value={getOther('format', 'standard')}
-            onChange={e => updateOther('format', e.target.value)}
+            value={getOther('format', 'standard')} 
+            onChange={val => updateOther('format', val)}
             options={[
-              { value: 'standard', label: 'Standard' },
+              { value: 'standard', label: 'Standard (Default)' },
               { value: 'compact', label: 'Compact' },
-              { value: 'embed', label: 'Rich Embed' },
+              { value: 'detailed', label: 'Detailed (Pro)' }
             ]}
-            className="max-w-md"
           />
         </div>
 

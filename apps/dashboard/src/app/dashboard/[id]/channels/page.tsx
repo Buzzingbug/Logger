@@ -117,7 +117,7 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
           <h3 className="text-lg font-bold text-white mb-4">Main Serverlog Channel</h3>
           <Select 
             value={config.channelRoutes['main'] || ''} 
-            onChange={e => handleChannelChange('main', e.target.value)}
+            onChange={val => handleChannelChange('main', val)}
             options={channelOptions} 
             placeholder="Select channel"
             className="max-w-md"
@@ -136,7 +136,7 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
             >
               <Select 
                 value={config.channelRoutes[key] || ''} 
-                onChange={e => handleChannelChange(key, e.target.value)}
+                onChange={val => handleChannelChange(key, val)}
                 options={channelOptions} 
                 placeholder="Select channel"
                 disabled={!isCategoryEnabled(key)}
