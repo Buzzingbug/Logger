@@ -49,7 +49,11 @@ const handler: EventHandler<'messageUpdate'> = {
 
     const webhook = await webhookManager.getWebhook(targetChannelId);
     if (webhook) {
-      await webhook.send({ embeds: [embed] }).catch(err => {
+      const authorId = newMessage.author?.id || 'Unknown';
+      await webhook.send({ 
+        content: `📝 **Message Edited** | User ID: \`${authorId}\``,
+        embeds: [embed] 
+      }).catch(err => {
         if (err.code === 10015) webhookManager.invalidateWebhook(targetChannelId);
       });
     }

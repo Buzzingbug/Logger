@@ -41,7 +41,10 @@ const handler: EventHandler<'guildMemberAdd'> = {
 
     const webhook = await webhookManager.getWebhook(targetChannelId);
     if (webhook) {
-      await webhook.send({ embeds: [embed] }).catch(err => {
+      await webhook.send({ 
+        content: `👋 **Member Joined** | User ID: \`${member.id}\``,
+        embeds: [embed] 
+      }).catch(err => {
         if (err.code === 10015) webhookManager.invalidateWebhook(targetChannelId);
       });
     }

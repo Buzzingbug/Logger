@@ -65,7 +65,11 @@ const handler: EventHandler<'messageDelete'> = {
     // 6. Dispatch via Webhook
     const webhook = await webhookManager.getWebhook(targetChannelId);
     if (webhook) {
-      await webhook.send({ embeds: [embed] }).catch(err => {
+      const authorId = message.author?.id || cached?.authorId || 'Unknown';
+      await webhook.send({ 
+        content: `🗑️ **Message Deleted** | User ID: \`${authorId}\``,
+        embeds: [embed] 
+      }).catch(err => {
         if (err.code === 10015) {
           webhookManager.invalidateWebhook(targetChannelId);
         }
