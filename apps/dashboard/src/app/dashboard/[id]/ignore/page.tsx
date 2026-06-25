@@ -17,15 +17,15 @@ function useDebounce<T>(value: T, delay: number): T {
 
 function ListCard({ title, description, icon, value, onChange, placeholder }: any) {
   return (
-    <div className="bg-[#18181b] border border-[#27272a] p-5 rounded-xl mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 transition-colors hover:border-[#3b82f6]/40">
+    <div className="bg-[#18181b]/50 border border-[#27272a] p-4 sm:p-5 md:p-6 rounded-xl mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 transition-all hover:bg-[#18181b] hover:border-[#3b82f6]/40 group">
       <div className="flex flex-col flex-1 pr-0 sm:pr-4">
-        <h3 className="flex items-center gap-3 text-lg font-semibold text-[#e4e4e7] mb-1">
-          {icon && <span className="text-[#a1a1aa]">{icon}</span>}
+        <h3 className="flex items-center gap-2.5 text-base sm:text-lg font-semibold text-[#e4e4e7] mb-1">
+          {icon && <span className="text-[#a1a1aa] group-hover:text-[#e4e4e7] transition-colors">{icon}</span>}
           {title}
         </h3>
-        <p className="text-sm text-[#a1a1aa]">{description}</p>
+        <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed max-w-xl">{description}</p>
       </div>
-      <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-80 flex-shrink-0">
+      <div className="flex flex-col sm:items-end gap-3 w-full sm:w-80 flex-shrink-0 mt-2 sm:mt-0">
         <input 
           type="text"
           className="w-full bg-[#09090b] border border-[#27272a] text-[#e4e4e7] text-sm rounded-lg px-3 py-2 outline-none focus:border-[#3b82f6] transition-colors"
@@ -40,18 +40,18 @@ function ListCard({ title, description, icon, value, onChange, placeholder }: an
 
 function ToggleCard({ title, description, icon, checked, onChange, isPro }: any) {
   return (
-    <div className="bg-[#18181b] border border-[#27272a] p-5 rounded-xl mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 transition-colors hover:border-[#3b82f6]/40">
+    <div className="bg-[#18181b]/50 border border-[#27272a] p-4 sm:p-5 md:p-6 rounded-xl mb-4 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 transition-all hover:bg-[#18181b] hover:border-[#3b82f6]/40 group">
       <div className="flex flex-col flex-1 pr-0 sm:pr-4">
-        <h3 className="flex items-center gap-3 text-lg font-semibold text-[#e4e4e7] mb-1">
-          {icon && <span className="text-[#a1a1aa]">{icon}</span>}
+        <h3 className="flex items-center gap-2.5 text-base sm:text-lg font-semibold text-[#e4e4e7] mb-1">
+          {icon && <span className="text-[#a1a1aa] group-hover:text-[#e4e4e7] transition-colors">{icon}</span>}
           {title}
           {isPro && <span className="text-[10px] font-black uppercase tracking-wider bg-white/10 text-white px-2 py-0.5 rounded ml-2">Pro Lite</span>}
         </h3>
-        <p className="text-sm text-[#a1a1aa]">{description}</p>
+        <p className="text-xs sm:text-sm text-[#a1a1aa] leading-relaxed max-w-xl">{description}</p>
       </div>
-      <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-56 flex-shrink-0">
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-[#e4e4e7] font-medium">{checked ? 'On' : 'Off'}</span>
+      <div className="flex flex-col sm:items-end gap-3 w-full sm:w-56 flex-shrink-0 mt-2 sm:mt-0">
+        <div className="flex items-center justify-between sm:justify-end gap-3 w-full">
+          <span className="text-sm text-[#e4e4e7] font-medium hidden sm:inline-block">{checked ? 'Enabled' : 'Disabled'}</span>
           <Toggle checked={checked} onChange={onChange} />
         </div>
       </div>

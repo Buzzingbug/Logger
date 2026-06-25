@@ -20,10 +20,10 @@ export default async function Home() {
             <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
           </svg>
         </div>
-        <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#e4e4e7] to-[#a1a1aa] tracking-tight mb-8">
+        <h1 className="text-5xl sm:text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#e4e4e7] to-[#a1a1aa] tracking-tight mb-6 sm:mb-8">
           Logger.
         </h1>
-        <p className="max-w-2xl text-xl text-[#a1a1aa] mb-12 leading-relaxed">
+        <p className="max-w-2xl text-lg sm:text-xl text-[#a1a1aa] mb-10 sm:mb-12 leading-relaxed px-4">
           The ultimate logging architecture. Secure, encrypted, and visually stunning. Admin access strictly enforced.
         </p>
 

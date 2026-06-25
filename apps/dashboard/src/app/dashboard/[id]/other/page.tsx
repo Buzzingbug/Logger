@@ -74,12 +74,12 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
         </div>
       </div>
 
-      <div className="bg-[#1a1a1f] p-8 rounded-2xl border border-[#3a3a45]">
+      <div className="bg-[#18181b]/50 p-4 sm:p-5 md:p-6 rounded-xl border border-[#27272a]">
         
         {/* SPOILERS */}
-        <div className="border-b border-[#3a3a45] pb-8 mb-8">
-          <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-2">SPOILERS</h3>
-          <p className="text-sm text-[#8b8b99] mb-4">Enable and spoilers are applied to media sent to the serverlogs</p>
+        <div className="border-b border-[#27272a] pb-6 sm:pb-8 mb-6 sm:mb-8">
+          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-1 sm:mb-2">SPOILERS</h3>
+          <p className="text-xs sm:text-sm text-[#a1a1aa] mb-4">Enable and spoilers are applied to media sent to the serverlogs</p>
           <Toggle 
             checked={getOther('spoilers', false)} 
             onChange={v => updateOther('spoilers', v)} 
@@ -87,54 +87,60 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
         </div>
 
         {/* BUTTONS */}
-        <div className="border-b border-[#3a3a45] pb-8 mb-8">
-          <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-2">BUTTONS</h3>
-          <p className="text-sm text-[#8b8b99] mb-4">Toggle which buttons are included with each log</p>
-          <Select 
-            value={getOther('buttons', 'all')} 
-            onChange={val => updateOther('buttons', val)}
-            options={[
-              { value: 'all', label: 'All Event Buttons' },
-              { value: 'none', label: 'No Event Buttons' },
-              { value: 'important', label: 'Important Only' }
-            ]}
-          />
+        <div className="border-b border-[#27272a] pb-6 sm:pb-8 mb-6 sm:mb-8">
+          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-1 sm:mb-2">BUTTONS</h3>
+          <p className="text-xs sm:text-sm text-[#a1a1aa] mb-4">Toggle which buttons are included with each log</p>
+          <div className="w-full sm:w-64">
+            <Select 
+              value={getOther('buttons', 'all')} 
+              onChange={val => updateOther('buttons', val)}
+              options={[
+                { value: 'all', label: 'All Event Buttons' },
+                { value: 'none', label: 'No Event Buttons' },
+                { value: 'important', label: 'Important Only' }
+              ]}
+            />
+          </div>
         </div>
 
-        <div className="border border-[#3a3a45] bg-[#1a1a1f] p-5 rounded-xl mb-3 flex flex-col sm:flex-row sm:items-center gap-4 transition-colors">
+        <div className="bg-[#18181b]/50 border border-[#27272a] p-4 sm:p-5 rounded-xl mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all hover:bg-[#18181b] hover:border-[#3b82f6]/40">
           <div className="flex-1">
-            <h3 className="flex items-center gap-2 text-lg font-bold text-[#e8e8ed]">Embed Format</h3>
-            <p className="text-sm text-[#8b8b99] mt-1">Change the visual style of log embeds</p>
+            <h3 className="flex items-center gap-2 text-base sm:text-lg font-bold text-[#e4e4e7]">Embed Format</h3>
+            <p className="text-xs sm:text-sm text-[#a1a1aa] mt-1">Change the visual style of log embeds</p>
           </div>
-          <Select 
-            value={getOther('format', 'standard')} 
-            onChange={val => updateOther('format', val)}
-            options={[
-              { value: 'standard', label: 'Standard (Default)' },
-              { value: 'compact', label: 'Compact' },
-              { value: 'detailed', label: 'Detailed (Pro)' }
-            ]}
-          />
+          <div className="w-full sm:w-64">
+            <Select 
+              value={getOther('format', 'standard')} 
+              onChange={val => updateOther('format', val)}
+              options={[
+                { value: 'standard', label: 'Standard (Default)' },
+                { value: 'compact', label: 'Compact' },
+                { value: 'detailed', label: 'Detailed (Pro)' }
+              ]}
+            />
+          </div>
         </div>
 
         {/* BOT INTEGRATIONS */}
-        <div className="pb-4">
-          <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-6">BOT INTEGRATIONS</h3>
+        <div className="pb-2">
+          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-4 sm:mb-6">BOT INTEGRATIONS</h3>
           
-          <div className="flex gap-3 mb-4">
-            <div className="mt-1 text-[#8b8b99]">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+            <div className="flex gap-3">
+              <div className="mt-1 text-[#a1a1aa]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-bold text-[#e4e4e7]">PluralKit Compatibility</h4>
+                <p className="text-xs sm:text-sm text-[#a1a1aa] mt-1 sm:mb-4 max-w-md">Automatically handle PluralKit interactions without cluttering up the logs</p>
+              </div>
             </div>
-            <div>
-              <h4 className="text-md font-bold text-[#e8e8ed]">PluralKit Compatibility</h4>
-              <p className="text-sm text-[#8b8b99] mt-1 mb-4">Automatically handle PluralKit interactions without cluttering up the logs</p>
+            <div className="pl-9 sm:pl-0 sm:self-center">
+              <Toggle 
+                checked={getOther('pluralkit', false)} 
+                onChange={v => updateOther('pluralkit', v)} 
+              />
             </div>
-          </div>
-          <div className="pl-9">
-            <Toggle 
-              checked={getOther('pluralkit', false)} 
-              onChange={v => updateOther('pluralkit', v)} 
-            />
           </div>
         </div>
 
