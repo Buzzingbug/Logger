@@ -33,8 +33,14 @@ export class ConfigManager {
       ignoreExecutorUsers: dbConfig.ignoreExecutorUsers,
       ignoreRoles: dbConfig.ignoreRoles,
       ignoreChannels: dbConfig.ignoreChannels,
+      ignoreCategories: dbConfig.ignoreCategories,
+      ignoreMessageContent: dbConfig.ignoreMessageContent,
+      ignoreExecutorRoles: dbConfig.ignoreExecutorRoles,
+      ignoreBotExecutors: dbConfig.ignoreBotExecutors,
+      ignoreBotTargets: dbConfig.ignoreBotTargets,
       channelRoutes: dbConfig.channelRoutes as Record<string, string>,
       embedColors: dbConfig.embedColors as Record<string, number>,
+      otherOptions: dbConfig.otherOptions as Record<string, any>,
     };
 
     // 3. Save to Redis
