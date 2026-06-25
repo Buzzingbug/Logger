@@ -112,7 +112,7 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
       </div>
 
       <div className="flex flex-col">
-        <div className="bg-surface/40 backdrop-blur-xl border border-border p-4 sm:p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:bg-surface/80 hover:border-accent/30 group">
+        <div className="relative z-[50] focus-within:z-[60] hover:z-[60] bg-surface/40 backdrop-blur-xl border border-border p-4 sm:p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:bg-surface/80 hover:border-accent/30 group">
           <h3 className="text-base sm:text-lg font-semibold text-text mb-3 flex items-center gap-2">
             <span className="w-2 h-6 bg-accent rounded-full hidden sm:block"></span>
             Main Serverlog Channel
@@ -126,23 +126,24 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
         </div>
 
         <div className="flex flex-col">
-          {Object.entries(CATEGORY_META).map(([key, meta]) => (
-            <CategoryCard
-              key={key}
-              title={meta.title}
-              description={meta.desc}
-              icon={meta.icon}
-              enabled={isCategoryEnabled(key)}
-              onToggle={(checked) => toggleCategory(key, checked)}
-            >
-              <Select 
-                value={config.channelRoutes[key] || ''} 
-                onChange={val => handleChannelChange(key, val)}
-                options={channelOptions} 
-                placeholder="Select channel"
-                disabled={!isCategoryEnabled(key)}
-              />
-            </CategoryCard>
+          {Object.entries(CATEGORY_META).map(([key, meta], index) => (
+            <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60]">
+              <CategoryCard
+                title={meta.title}
+                description={meta.desc}
+                icon={meta.icon}
+                enabled={isCategoryEnabled(key)}
+                onToggle={(checked) => toggleCategory(key, checked)}
+              >
+                <Select 
+                  value={config.channelRoutes[key] || ''} 
+                  onChange={val => handleChannelChange(key, val)}
+                  options={channelOptions} 
+                  placeholder="Select channel"
+                  disabled={!isCategoryEnabled(key)}
+                />
+              </CategoryCard>
+            </div>
           ))}
         </div>
       </div>
