@@ -24,7 +24,7 @@ const handler: EventHandler<'guildMemberAdd'> = {
 
     if (isIgnored) return;
 
-    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Members'];
+    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Members'] || config.channelRoutes['main'];
     if (!targetChannelId) return;
 
     const embed = LogEmbedBuilder.build({

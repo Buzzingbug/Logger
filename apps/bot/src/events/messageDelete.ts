@@ -42,7 +42,7 @@ const handler: EventHandler<'messageDelete'> = {
     }
 
     // 3. Find target channel for routing
-    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Messages'];
+    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Messages'] || config.channelRoutes['main'];
     if (!targetChannelId) return;
 
     // 4. Try to recover content from cache

@@ -27,7 +27,7 @@ const handler: EventHandler<'messageUpdate'> = {
 
     if (isIgnored) return;
 
-    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Messages'];
+    const targetChannelId = config.channelRoutes[String(eventId)] || config.channelRoutes['Messages'] || config.channelRoutes['main'];
     if (!targetChannelId) return;
 
     let oldContent = oldMessage.content || '*Old content not cached.*';
