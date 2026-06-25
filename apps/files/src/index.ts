@@ -55,7 +55,8 @@ app.post('/api/v1/files/upload', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
+// Run on a fixed internal port so it doesn't conflict with Next.js grabbing Railway's public process.env.PORT
+const PORT = 4000;
 app.listen(PORT, () => {
-  console.log(`Files microservice running on port ${PORT}`);
+  console.log(`Files microservice running internally on port ${PORT}`);
 });
