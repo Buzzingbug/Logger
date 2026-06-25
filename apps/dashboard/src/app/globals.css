@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   /* Dark theme (default — matches Discord) */
   --color-bg:        #0f0f11;
@@ -11,6 +13,11 @@
   --color-success:   #57F287;
   --color-danger:    #ED4245;
   --color-warning:   #FEE75C;
+}
+
+@theme {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
 }
 
 * {
