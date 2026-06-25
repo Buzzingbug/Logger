@@ -1,0 +1,30 @@
+.toggle {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  background: var(--color-surface-2);
+  transition: background 150ms ease;
+  cursor: pointer;
+  position: relative;
+}
+.toggle[data-checked="true"] {
+  background: var(--color-success);
+}
+.toggle.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.toggle-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 150ms ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.toggle[data-checked="true"] .toggle-thumb {
+  transform: translateX(20px);
+}

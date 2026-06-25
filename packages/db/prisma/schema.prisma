@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GuildConfig {
+  guildId             String   @id
+  enabledEvents       Int[]    // Array of active event IDs
+  ignoreTargetUsers   String[]
+  ignoreExecutorUsers String[]
+  ignoreRoles         String[]
+  ignoreChannels      String[]
+  
+  // JSON field to store { [eventIdOrCategory]: channelId }
+  channelRoutes       Json     @default("{}")
+  
+  // JSON field to store { [category]: hexColor }
+  embedColors         Json     @default("{}")
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
