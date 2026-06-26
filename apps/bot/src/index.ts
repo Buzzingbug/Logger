@@ -1,4 +1,4 @@
-import { GatewayIntentBits, REST, Routes, SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { GatewayIntentBits, REST, Routes, SlashCommandBuilder, PermissionFlagsBits, Partials } from 'discord.js';
 import 'dotenv/config';
 import { prisma, redis } from '@logger/db';
 import { LoggerClient } from './client/LoggerClient';
@@ -12,6 +12,14 @@ const client = new LoggerClient({
     GatewayIntentBits.MessageContent,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildMessageReactions,
+  ],
+  partials: [
+    Partials.Message,
+    Partials.Channel,
+    Partials.Reaction,
+    Partials.User,
+    Partials.GuildMember,
   ],
 });
 

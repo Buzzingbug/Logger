@@ -32,7 +32,7 @@ const handler: EventHandler<'messageDelete'> = {
     // this was a proxy replacement. Skip logging to prevent spam.
     const recentMessages = await message.channel.messages.fetch({ limit: 5 }).catch(() => null);
     if (recentMessages) {
-      const isPluralKitProxy = recentMessages.some(m => 
+      const isPluralKitProxy = message.content && recentMessages.some(m => 
         m.webhookId && m.content === message.content
       );
       if (isPluralKitProxy) {
