@@ -34,6 +34,29 @@ export default async function Home() {
         ) : (
           <LoginButton />
         )}
+
+        {/* Feature List */}
+        <div className="mt-16 w-full max-w-md text-left bg-[#18181b]/50 border border-white/5 rounded-2xl p-6 md:p-8 backdrop-blur-md">
+          <ul className="space-y-4">
+            {[
+              "Change Log Format",
+              "Customize Colors",
+              "Per Log Type Channels",
+              "Log Bot Actions",
+              "Give to 10 servers",
+              <strong key="4weeks" className="text-[#e4e4e7]">Log messages up to 4 weeks old</strong>,
+              "See who muted/deafened users",
+              "Exclusive Pro Bot",
+            ].map((feature, i) => (
+              <li key={i} className="flex items-center space-x-3 text-[#a1a1aa]">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
