@@ -1,7 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 
-const localesDir = path.join(__dirname, '..', 'locales');
+let localesDir = path.join(__dirname, '..', 'locales'); // In dist
+if (!fs.existsSync(localesDir)) {
+  localesDir = path.join(__dirname, '..', '..', 'src', 'locales'); // In src
+}
+
 const locales: Record<string, Record<string, string>> = {};
 
 // Load all JSON files in the locales directory
@@ -18,6 +22,8 @@ if (fs.existsSync(localesDir)) {
       }
     }
   }
+} else {
+  console.error(`Locales directory not found at ${localesDir}`);
 }
 
 /**
