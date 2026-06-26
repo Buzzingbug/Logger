@@ -2,62 +2,131 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import Link from "next/link";
 import { LoginButton } from "./components/LoginButton";
+import { Container, Center, Stack, Title, Text, Button, Box } from "@mantine/core";
+import { IconSparkles } from "@tabler/icons-react";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#09090b]">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#3b82f6]/10 blur-[120px] mix-blend-screen animate-pulse" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#3b82f6]/5 blur-[120px] mix-blend-screen" />
-      </div>
+    <Box 
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        backgroundColor: '#09090b',
+      }}
+    >
+      {/* Fluid Reactive Background using pure CSS */}
+      <Box 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
+        <div 
+          style={{
+            position: 'absolute',
+            top: '-20%',
+            left: '-10%',
+            width: '60vw',
+            height: '60vw',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%)',
+            filter: 'blur(80px)',
+            mixBlendMode: 'screen',
+            animation: 'float 10s ease-in-out infinite alternate',
+          }}
+        />
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '-20%',
+            right: '-10%',
+            width: '50vw',
+            height: '50vw',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%)',
+            filter: 'blur(80px)',
+            mixBlendMode: 'screen',
+            animation: 'float 12s ease-in-out infinite alternate-reverse',
+          }}
+        />
+      </Box>
 
-      <div className="z-10 flex flex-col items-center text-center px-6">
-        <div className="mb-6 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-          </svg>
-        </div>
-        <h1 className="text-5xl sm:text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#e4e4e7] to-[#a1a1aa] tracking-tight mb-6 sm:mb-8">
-          Logger.
-        </h1>
-        <p className="max-w-2xl text-lg sm:text-xl text-[#a1a1aa] mb-10 sm:mb-12 leading-relaxed px-4">
-          The ultimate logging architecture. Secure, encrypted, and visually stunning. Admin access strictly enforced.
-        </p>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float {
+          0% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-50px) scale(1.1); }
+          100% { transform: translateY(0) scale(1); }
+        }
+      `}} />
 
-        {session ? (
-          <Link href="/dashboard" className="relative px-8 py-4 bg-[#18181b] hover:bg-[#27272a] text-[#e4e4e7] font-bold rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 border border-[#27272a] backdrop-blur-md">
-            Enter Dashboard &rarr;
-          </Link>
-        ) : (
-          <LoginButton />
-        )}
+      <Container size="sm" style={{ zIndex: 1, position: 'relative' }}>
+        <Stack align="center" gap="xl" ta="center">
+          
+          <Center 
+            style={{ 
+              width: 80, 
+              height: 80, 
+              borderRadius: 24, 
+              background: 'rgba(255, 255, 255, 0.05)', 
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)'
+            }}
+          >
+            <IconSparkles size={40} color="#8b5cf6" stroke={1.5} />
+          </Center>
 
-        {/* Feature List */}
-        <div className="mt-16 w-full max-w-md text-left bg-[#18181b]/50 border border-white/5 rounded-2xl p-6 md:p-8 backdrop-blur-md">
-          <ul className="space-y-4">
-            {[
-              "Change Log Format",
-              "Customize Colors",
-              "Per Log Type Channels",
-              "Log Bot Actions",
-              "Give to 10 servers",
-              <strong key="4weeks" className="text-[#e4e4e7]">Log messages up to 4 weeks old</strong>,
-              "See who muted/deafened users",
-              "Exclusive Pro Bot",
-            ].map((feature, i) => (
-              <li key={i} className="flex items-center space-x-3 text-[#a1a1aa]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
+          <Title 
+            order={1} 
+            style={{ 
+              fontSize: 'clamp(3rem, 8vw, 6rem)', 
+              fontWeight: 900,
+              letterSpacing: '-0.02em',
+              background: 'linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              lineHeight: 1
+            }}
+          >
+            Logger.
+          </Title>
+
+          <Text size="xl" c="dimmed" maw={600} mx="auto" style={{ lineHeight: 1.6 }}>
+            The ultimate logging architecture. Secure, encrypted, and visually stunning. Admin access strictly enforced.
+          </Text>
+
+          <Box mt="xl">
+            {session ? (
+              <Button
+                component={Link}
+                href="/dashboard"
+                size="xl"
+                radius="xl"
+                variant="gradient"
+                gradient={{ from: 'violet', to: 'indigo', deg: 45 }}
+                style={{
+                  boxShadow: '0 0 40px rgba(139, 92, 246, 0.4)',
+                }}
+              >
+                Enter Dashboard &rarr;
+              </Button>
+            ) : (
+              <LoginButton />
+            )}
+          </Box>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
