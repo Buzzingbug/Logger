@@ -24,6 +24,7 @@
 }
 
 @theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--color-bg);
   --color-foreground: var(--color-text);
   --color-surface: var(--color-surface);
@@ -66,7 +67,6 @@
 body {
   background: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-jakarta);
   -webkit-font-smoothing: antialiased;
 }
 

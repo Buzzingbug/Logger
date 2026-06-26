@@ -8,8 +8,7 @@ import { Search, Bell, HelpCircle, Sun, Moon } from 'lucide-react';
 export function DashboardLayout({ children, guildId }: { children: React.ReactNode, guildId: string }) {
   return (
     <div className="min-h-screen bg-bg text-text font-sans flex flex-col overflow-x-hidden">
-      {/* Top Header */}
-      <header className="border-b border-border bg-bg/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between sticky top-0 z-50 h-[73px]">
+      <header className="border-b border-border bg-bg/95 backdrop-blur-xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between sticky top-0 z-50 h-[73px]">
         
         {/* Left: Server Selector Mock */}
         <div className="flex items-center gap-4">

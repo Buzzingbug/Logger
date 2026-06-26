@@ -36,7 +36,7 @@ export function Select({ options, value, onChange, placeholder = 'Select...', cl
       <button
         type="button"
         disabled={disabled}
-        className={`w-full flex items-center justify-between bg-bg/80 backdrop-blur-md border ${isOpen ? 'border-accent shadow-[0_0_15px_var(--color-accent-glow)]' : 'border-border'} text-text text-sm rounded-xl px-4 py-2.5 outline-none hover:border-accent/50 spring-transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`w-full flex items-center justify-between bg-surface border ${isOpen ? 'border-accent shadow-[0_0_15px_var(--color-accent-glow)]' : 'border-border/60'} text-text text-[13px] rounded-xl px-4 py-2.5 outline-none hover:border-accent/40 spring-transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
       >
         <span className={`block truncate font-medium ${selectedOption ? 'text-text' : 'text-text-muted'}`}>

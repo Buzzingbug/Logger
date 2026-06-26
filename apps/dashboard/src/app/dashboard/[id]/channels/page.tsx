@@ -172,11 +172,11 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
                         disabled={!isCategoryEnabled(key)}
                       />
                       
-                      <div className="flex flex-col gap-1 mt-2">
-                        <h4 className="text-[10px] uppercase tracking-wider text-text-muted font-bold mb-2">Individual Events</h4>
+                      <div className="flex flex-col mt-2 bg-bg/40 rounded-xl p-3 border border-border/30">
+                        <h4 className="text-[10px] uppercase tracking-wider text-text-muted font-bold mb-1">Individual Events</h4>
                         {eventIds.map(eventId => (
-                          <div key={eventId} className="flex items-center justify-between py-1.5 border-b border-border/30 last:border-0">
-                            <span className="text-[13px] text-text font-medium">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
+                          <div key={eventId} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0 group/event">
+                            <span className="text-[12px] text-text/90 font-medium group-hover/event:text-white spring-transition">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
                             <Toggle 
                               checked={config.enabledEvents.includes(eventId)} 
                               onChange={(checked) => toggleEvent(eventId, checked)} 
@@ -186,20 +186,20 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
 
                         {key === 'Messages' && (
                           <>
-                            <div className="flex items-center justify-between py-2 mt-2 pt-3 border-t border-border/50">
+                            <div className="flex items-center justify-between py-2 mt-1 pt-2 border-t border-white/10 group/event">
                               <div className="flex flex-col pr-4">
-                                <span className="text-[13px] text-text font-medium mb-0.5">Log Text Message Deletes</span>
-                                <span className="text-[11px] text-text-muted leading-snug">Log purely text messages</span>
+                                <span className="text-[12px] text-text/90 font-medium mb-0.5 group-hover/event:text-white spring-transition">Log Text Message Deletes</span>
+                                <span className="text-[10px] text-text-muted leading-tight">Log purely text messages</span>
                               </div>
                               <Toggle 
                                 checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
                                 onChange={(checked) => toggleOtherOption('logTextMessageDeletes', checked)} 
                               />
                             </div>
-                            <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center justify-between py-2 group/event">
                               <div className="flex flex-col pr-4">
-                                <span className="text-[13px] text-text font-medium mb-0.5">Log Media Message Deletes</span>
-                                <span className="text-[11px] text-text-muted leading-snug">Attach links for images/videos</span>
+                                <span className="text-[12px] text-text/90 font-medium mb-0.5 group-hover/event:text-white spring-transition">Log Media Message Deletes</span>
+                                <span className="text-[10px] text-text-muted leading-tight">Attach links for images/videos</span>
                               </div>
                               <Toggle 
                                 checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 

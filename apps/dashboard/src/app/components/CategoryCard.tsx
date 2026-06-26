@@ -12,7 +12,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ title, description, enabled, onToggle, icon, children }: CategoryCardProps) {
   return (
-    <div className={`bg-surface border border-border p-5 md:p-6 rounded-2xl flex flex-col gap-4 spring-transition hover:border-border-glow group ${enabled ? 'shadow-[0_4px_25px_-5px_rgba(0,0,0,0.3)]' : ''}`}>
+    <div className={`bg-surface border ${enabled ? 'border-accent/40 shadow-[0_4px_25px_-5px_rgba(124,58,237,0.15)]' : 'border-border/60'} p-5 rounded-[20px] flex flex-col gap-4 spring-transition hover:border-accent/50 group`}>
       
       {/* Card Header */}
       <div className="flex justify-between items-start">
