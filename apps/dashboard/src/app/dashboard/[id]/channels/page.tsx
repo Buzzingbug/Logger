@@ -136,8 +136,8 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
       </div>
 
       <div className="flex flex-col">
-        <div className="relative z-[50] focus-within:z-[60] hover:z-[60] bg-surface/40 backdrop-blur-xl border border-border p-4 sm:p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:bg-surface/80 hover:border-accent/30 group">
-          <h3 className="text-base sm:text-lg font-semibold text-text mb-3 flex items-center gap-2">
+        <div className="relative z-[50] focus-within:z-[60] hover:z-[60] bg-surface border border-border p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:border-border-glow group card-gradient shadow-lg">
+          <h3 className="text-lg font-semibold text-text mb-3 flex items-center gap-2">
             <span className="w-2 h-6 bg-accent rounded-full hidden sm:block"></span>
             Main Serverlog Channel
           </h3>
@@ -149,66 +149,69 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
           />
         </div>
 
-        <div className="flex flex-col">
+        {/* Grid Layout for Categories */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {Object.entries(CATEGORY_META).map(([key, meta], index) => {
             const eventIds = EVENT_CATEGORIES[key as keyof typeof EVENT_CATEGORIES] || [];
             return (
-              <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60]">
-                <CategoryCard
-                  title={meta.title}
-                  description={meta.desc}
-                  icon={meta.icon}
-                  enabled={isCategoryEnabled(key)}
-                  onToggle={(checked) => toggleCategory(key, checked)}
-                >
-                  <div className="flex flex-col gap-4 w-full">
-                    <Select 
-                      value={config.channelRoutes[key] || ''} 
-                      onChange={val => handleChannelChange(key, val)}
-                      options={channelOptions} 
-                      placeholder="Select channel"
-                      disabled={!isCategoryEnabled(key)}
-                    />
-                    
-                    <div className="flex flex-col gap-2 mt-2 bg-surface/30 p-3 rounded-xl border border-border/50">
-                      <h4 className="text-xs uppercase tracking-wider text-text-muted font-bold mb-1">Individual Events</h4>
-                      {eventIds.map(eventId => (
-                        <div key={eventId} className="flex items-center justify-between py-1">
-                          <span className="text-sm text-text font-medium">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
-                          <Toggle 
-                            checked={config.enabledEvents.includes(eventId)} 
-                            onChange={(checked) => toggleEvent(eventId, checked)} 
-                          />
-                        </div>
-                      ))}
+              <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60] flex h-full">
+                <div className="w-full h-full">
+                  <CategoryCard
+                    title={meta.title}
+                    description={meta.desc}
+                    icon={meta.icon}
+                    enabled={isCategoryEnabled(key)}
+                    onToggle={(checked) => toggleCategory(key, checked)}
+                  >
+                    <div className="flex flex-col gap-4 w-full mt-2">
+                      <Select 
+                        value={config.channelRoutes[key] || ''} 
+                        onChange={val => handleChannelChange(key, val)}
+                        options={channelOptions} 
+                        placeholder="Select channel"
+                        disabled={!isCategoryEnabled(key)}
+                      />
+                      
+                      <div className="flex flex-col gap-1 mt-2">
+                        <h4 className="text-[10px] uppercase tracking-wider text-text-muted font-bold mb-2">Individual Events</h4>
+                        {eventIds.map(eventId => (
+                          <div key={eventId} className="flex items-center justify-between py-1.5 border-b border-border/30 last:border-0">
+                            <span className="text-[13px] text-text font-medium">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
+                            <Toggle 
+                              checked={config.enabledEvents.includes(eventId)} 
+                              onChange={(checked) => toggleEvent(eventId, checked)} 
+                            />
+                          </div>
+                        ))}
 
-                      {key === 'Messages' && (
-                        <>
-                          <div className="flex items-center justify-between py-1 mt-2 pt-3 border-t border-border/50">
-                            <div className="flex flex-col">
-                              <span className="text-sm text-text font-medium">Log Text Message Deletes</span>
-                              <span className="text-xs text-text-muted">Log when a purely text message is deleted</span>
+                        {key === 'Messages' && (
+                          <>
+                            <div className="flex items-center justify-between py-2 mt-2 pt-3 border-t border-border/50">
+                              <div className="flex flex-col pr-4">
+                                <span className="text-[13px] text-text font-medium mb-0.5">Log Text Message Deletes</span>
+                                <span className="text-[11px] text-text-muted leading-snug">Log purely text messages</span>
+                              </div>
+                              <Toggle 
+                                checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
+                                onChange={(checked) => toggleOtherOption('logTextMessageDeletes', checked)} 
+                              />
                             </div>
-                            <Toggle 
-                              checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
-                              onChange={(checked) => toggleOtherOption('logTextMessageDeletes', checked)} 
-                            />
-                          </div>
-                          <div className="flex items-center justify-between py-1">
-                            <div className="flex flex-col">
-                              <span className="text-sm text-text font-medium">Log Media Message Deletes</span>
-                              <span className="text-xs text-text-muted">Attach media links when images/videos are deleted</span>
+                            <div className="flex items-center justify-between py-2">
+                              <div className="flex flex-col pr-4">
+                                <span className="text-[13px] text-text font-medium mb-0.5">Log Media Message Deletes</span>
+                                <span className="text-[11px] text-text-muted leading-snug">Attach links for images/videos</span>
+                              </div>
+                              <Toggle 
+                                checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
+                                onChange={(checked) => toggleOtherOption('logMediaMessageDeletes', checked)} 
+                              />
                             </div>
-                            <Toggle 
-                              checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
-                              onChange={(checked) => toggleOtherOption('logMediaMessageDeletes', checked)} 
-                            />
-                          </div>
-                        </>
-                      )}
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </CategoryCard>
+                  </CategoryCard>
+                </div>
               </div>
             );
           })}
