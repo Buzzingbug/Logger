@@ -2,6 +2,7 @@
   "message_deleted_title": "Message Supprimé",
   "message_deleted_desc": "**Supprimé dans {channel}**\n\n{content}",
   "message_deleted_no_content": "**Supprimé dans {channel}**\n\n*Aucun contenu textuel*",
+  "message_deleted_media_only": "**Supprimé dans {channel}**",
   "deleted_media": "\n**Média Supprimé ({count}):**\n",
   "unknown_user": "Utilisateur Inconnu",
   "author": "Auteur",

@@ -80,6 +80,8 @@ const handler: EventHandler<'messageDelete'> = {
       description = t('message_deleted_desc', lang, { channel: `<#${message.channelId}>`, content });
     } else if (!hasMedia) {
       description = t('message_deleted_no_content', lang, { channel: `<#${message.channelId}>` });
+    } else {
+      description = t('message_deleted_media_only', lang, { channel: `<#${message.channelId}>` });
     }
 
     if (hasMedia) {

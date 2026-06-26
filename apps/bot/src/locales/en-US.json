@@ -2,6 +2,7 @@
   "message_deleted_title": "Message Deleted",
   "message_deleted_desc": "**Deleted in {channel}**\n\n{content}",
   "message_deleted_no_content": "**Deleted in {channel}**\n\n*No text content*",
+  "message_deleted_media_only": "**Deleted in {channel}**",
   "deleted_media": "\n**Deleted Media ({count}):**\n",
   "unknown_user": "Unknown User",
   "author": "Author",
