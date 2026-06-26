@@ -4,6 +4,7 @@ import '@mantine/core/styles.css';
 import "./globals.css";
 
 import { ColorSchemeScript, MantineProvider, createTheme, mantineHtmlProps } from '@mantine/core';
+import AuthProvider from "./components/AuthProvider";
 
 const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
@@ -49,9 +50,11 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body className="min-h-full flex flex-col m-0 p-0">
-        <MantineProvider defaultColorScheme="dark" theme={theme}>
-          {children}
-        </MantineProvider>
+        <AuthProvider>
+          <MantineProvider defaultColorScheme="dark" theme={theme}>
+            {children}
+          </MantineProvider>
+        </AuthProvider>
       </body>
     </html>
   );

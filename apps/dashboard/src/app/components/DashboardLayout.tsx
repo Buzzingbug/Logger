@@ -1,15 +1,32 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppShell, Burger, Group, Text, NavLink, Box, Button, Card, Avatar } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconLayoutDashboard, IconSettings, IconShieldOff, IconServerCog, IconCrown, IconSearch, IconBell, IconHelp, IconSparkles } from '@tabler/icons-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export function DashboardLayout({ children, guildId }: { children: React.ReactNode, guildId: string }) {
   const [opened, { toggle }] = useDisclosure();
   const pathname = usePathname();
   const router = useRouter();
+  
+  const { data: session } = useSession();
+  const [guildInfo, setGuildInfo] = useState<{ name: string, icon: string | null } | null>(null);
+
+  useEffect(() => {
+    if (guildId) {
+      fetch(`/api/guilds/${guildId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.error) {
+            setGuildInfo(data);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [guildId]);
 
   const links = [
     { name: 'Channels', path: `/dashboard/${guildId}/channels`, icon: IconLayoutDashboard },
@@ -30,10 +47,16 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
             <Group gap="sm">
               <Box bg="violet.9" c="white" p={6} style={{ borderRadius: 8 }}>
-                <Text fw={900} size="sm">PP</Text>
+                {guildInfo?.icon ? (
+                  <Avatar src={guildInfo.icon} size={28} radius="sm" />
+                ) : (
+                  <Text fw={900} size="sm">
+                    {guildInfo?.name ? guildInfo.name.substring(0, 2).toUpperCase() : 'PP'}
+                  </Text>
+                )}
               </Box>
               <Box>
-                <Text fw={700} size="sm" lh={1}>Paradise Prime</Text>
+                <Text fw={700} size="sm" lh={1}>{guildInfo?.name || 'Loading...'}</Text>
                 <Text size="xs" c="dimmed">Server</Text>
               </Box>
             </Group>
@@ -53,10 +76,10 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
             <IconHelp size={20} color="gray" />
             <Group gap="xs" visibleFrom="xs">
               <Box ta="right">
-                <Text size="sm" fw={700} lh={1}>Prime Admin</Text>
+                <Text size="sm" fw={700} lh={1}>{session?.user?.name || 'Loading...'}</Text>
                 <Text size="xs" c="dimmed">Administrator</Text>
               </Box>
-              <Avatar radius="xl" color="violet" />
+              <Avatar src={session?.user?.image || undefined} radius="xl" color="violet" />
             </Group>
           </Group>
         </Group>
