@@ -8,13 +8,14 @@
     "start": "npm run db:push --workspace=@logger/db && node dist/index.js"
   },
   "dependencies": {
+    "@logger/db": "*",
+    "@logger/shared": "*",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
-    "@logger/shared": "*",
-    "@logger/db": "*"
+    "erlpack": "^0.1.4"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.0"
   }
 }

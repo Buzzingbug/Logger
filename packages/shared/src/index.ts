@@ -125,6 +125,7 @@ export interface GuildConfig {
   ignoreBotTargets: boolean;
   channelRoutes: Record<string, string>; // category/eventId -> channelId
   embedColors: Record<string, number>; // category -> color
+  language?: string;
   otherOptions: Record<string, any>;
 }
 

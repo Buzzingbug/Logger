@@ -17,6 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!config) {
     return NextResponse.json({
       guildId,
+      language: 'en-US',
       enabledEvents: [],
       ignoreTargetUsers: [],
       ignoreExecutorUsers: [],
@@ -33,7 +34,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     });
   }
 
-  return NextResponse.json(config);
+  return NextResponse.json({
+    ...config,
+    language: (config.otherOptions as any)?.language || 'en-US'
+  });
 }
 
 export async function POST(req: any, { params }: { params: Promise<{ id: string }> }) {
@@ -42,6 +46,11 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
 
   const { id: guildId } = await params;
   const body: Partial<GuildConfig> = await req.json();
+
+  const mergedOtherOptions = {
+    ...(body.otherOptions || {}),
+    language: body.language || 'en-US'
+  };
 
   const config = await prisma.guildConfig.upsert({
     where: { guildId },
@@ -58,7 +67,7 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
       ignoreBotTargets: body.ignoreBotTargets,
       channelRoutes: body.channelRoutes,
       embedColors: body.embedColors,
-      otherOptions: body.otherOptions,
+      otherOptions: mergedOtherOptions,
     },
     create: {
       guildId,
@@ -74,11 +83,11 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
       ignoreBotTargets: body.ignoreBotTargets || false,
       channelRoutes: body.channelRoutes || {},
       embedColors: body.embedColors || {},
-      otherOptions: body.otherOptions || {},
+      otherOptions: mergedOtherOptions,
     }
   });
 
   await redis.del(`config:${guildId}`);
 
-  return NextResponse.json({ success: true, config });
+  return NextResponse.json({ success: true, config: { ...config, language: mergedOtherOptions.language } });
 }

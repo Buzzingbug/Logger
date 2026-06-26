@@ -6,6 +6,7 @@ import { LogEmbedBuilder } from '../utils/LogEmbedBuilder';
 import { webhookManager } from '../index';
 import { EMBED_COLORS } from '@logger/shared';
 import { LoggerClient } from '../client/LoggerClient';
+import { t } from '../utils/i18n';
 
 const handler: EventHandler<'messageDelete'> = {
   name: 'messageDelete',
@@ -71,16 +72,18 @@ const handler: EventHandler<'messageDelete'> = {
     if (!hasMedia && !logText) return;
 
     // 5. Build Embed
-    let description = `**Author:** <@${message.author?.id || cached?.authorId || 'Unknown'}>\n**Channel:** <#${message.channelId}>\n`;
+    const lang = (config.otherOptions as any)?.language || 'en-US';
+    
+    let description = '';
     
     if (content) {
-      description += `\n**Content:**\n${content}\n`;
+      description = t('message_deleted_desc', lang, { channel: `<#${message.channelId}>`, content });
     } else if (!hasMedia) {
-      description += `\n**Content:**\n*Message content not cached.*\n`;
+      description = t('message_deleted_no_content', lang, { channel: `<#${message.channelId}>` });
     }
 
     if (hasMedia) {
-      description += `\n**Deleted Media (${attachments.length}):**\n`;
+      description += t('deleted_media', lang, { count: attachments.length });
       attachments.forEach((a) => {
         description += `[${a.name}](${a.proxyURL})\n`;
       });
@@ -88,7 +91,7 @@ const handler: EventHandler<'messageDelete'> = {
 
     const embed = LogEmbedBuilder.build({
       color: config.embedColors['Messages'] || EMBED_COLORS.Messages,
-      authorName: 'Message Deleted',
+      authorName: t('message_deleted_title', lang),
       authorIconURL: client.user?.displayAvatarURL() || '',
       typeId: eventId,
       description: description.trim(),
@@ -98,9 +101,9 @@ const handler: EventHandler<'messageDelete'> = {
     // 6. Dispatch via Webhook
     const webhook = await webhookManager.getWebhook(targetChannelId);
     if (webhook) {
-      const authorId = message.author?.id || cached?.authorId || 'Unknown';
+      const authorId = message.author?.id || cached?.authorId || t('unknown_user', lang);
       await webhook.send({ 
-        content: `🗑️ **Message Deleted** | User ID: \`${authorId}\``,
+        content: `🗑️ **${t('message_deleted_title', lang)}** | ${t('author', lang)} ID: \`${authorId}\``,
         embeds: [embed] 
       }).catch(err => {
         if (err.code === 10015) {

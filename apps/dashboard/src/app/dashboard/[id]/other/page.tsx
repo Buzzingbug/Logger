@@ -128,7 +128,6 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
 
         <Divider my="xl" />
 
-        {/* FORMAT */}
         <Box mb="xl">
           <Group justify="space-between" align="flex-start" wrap="nowrap">
             <Box>
@@ -142,6 +141,65 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
                 { value: 'standard', label: 'Standard (Default)' },
                 { value: 'compact', label: 'Compact' },
                 { value: 'detailed', label: 'Detailed (Pro)' }
+              ]}
+              w={250}
+            />
+          </Group>
+        </Box>
+
+        <Divider my="xl" />
+
+        {/* MESSAGES OPTIONS */}
+        <Box mb="xl">
+          <Title order={5} tt="uppercase" lts={1} mb="lg">Messages Logging Options</Title>
+          <Stack gap="md">
+            <Group justify="space-between" wrap="nowrap">
+              <Box>
+                <Title order={6}>Log Text Message Deletes</Title>
+                <Text size="sm" c="dimmed">Log purely text messages when they are deleted</Text>
+              </Box>
+              <Switch 
+                checked={getOther('logTextMessageDeletes', true)} 
+                onChange={e => updateOther('logTextMessageDeletes', e.currentTarget.checked)} 
+                color="violet"
+                size="md"
+              />
+            </Group>
+            
+            <Group justify="space-between" wrap="nowrap">
+              <Box>
+                <Title order={6}>Log Media Message Deletes</Title>
+                <Text size="sm" c="dimmed">Attach links for images/videos when messages are deleted</Text>
+              </Box>
+              <Switch 
+                checked={getOther('logMediaMessageDeletes', true)} 
+                onChange={e => updateOther('logMediaMessageDeletes', e.currentTarget.checked)} 
+                color="violet"
+                size="md"
+              />
+            </Group>
+          </Stack>
+        </Box>
+
+        <Divider my="xl" />
+
+        {/* LANGUAGE */}
+        <Box mb="xl">
+          <Group justify="space-between" align="flex-start" wrap="nowrap">
+            <Box>
+              <Title order={5} mb="xs">Language</Title>
+              <Text size="sm" c="dimmed">Change the language of the bot's logs</Text>
+            </Box>
+            <Select 
+              value={config.language || 'en-US'} 
+              onChange={val => {
+                if (val) setConfig(prev => prev ? { ...prev, language: val } : prev)
+              }}
+              data={[
+                { value: 'en-US', label: 'English (US)' },
+                { value: 'fr-FR', label: 'Français (French)' },
+                { value: 'de-DE', label: 'Deutsch (German)' },
+                { value: 'ja-JP', label: '日本語 (Japanese)' }
               ]}
               w={250}
             />

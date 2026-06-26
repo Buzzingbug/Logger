@@ -206,57 +206,7 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
                         placeholder="Inherit main channel"
                         searchable
                         clearable
-                        mb="md"
                       />
-                      
-                      <Card withBorder bg="dark.7" p="md" radius="sm">
-                        <Text size="xs" fw={700} tt="uppercase" c="dimmed" mb="sm">Individual Events</Text>
-                        <Stack gap="xs">
-                          {eventIds.map(eventId => (
-                            <Group key={eventId} justify="space-between" wrap="nowrap">
-                              <Text size="sm" fw={500}>{EVENT_NAMES[eventId] || `Event ${eventId}`}</Text>
-                              <Switch 
-                                checked={config.enabledEvents.includes(eventId)} 
-                                onChange={(e) => toggleEvent(eventId, e.currentTarget.checked)} 
-                                color="violet"
-                                size="sm"
-                              />
-                            </Group>
-                          ))}
-                        </Stack>
-
-                        {key === 'Messages' && (
-                          <Box mt="md">
-                            <Divider my="sm" />
-                            <Stack gap="xs">
-                              <Group justify="space-between" wrap="nowrap">
-                                <Box>
-                                  <Text size="sm" fw={500}>Log Text Message Deletes</Text>
-                                  <Text size="xs" c="dimmed">Log purely text messages</Text>
-                                </Box>
-                                <Switch 
-                                  checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
-                                  onChange={(e) => toggleOtherOption('logTextMessageDeletes', e.currentTarget.checked)} 
-                                  color="violet"
-                                  size="sm"
-                                />
-                              </Group>
-                              <Group justify="space-between" wrap="nowrap">
-                                <Box>
-                                  <Text size="sm" fw={500}>Log Media Message Deletes</Text>
-                                  <Text size="xs" c="dimmed">Attach links for images/videos</Text>
-                                </Box>
-                                <Switch 
-                                  checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
-                                  onChange={(e) => toggleOtherOption('logMediaMessageDeletes', e.currentTarget.checked)} 
-                                  color="violet"
-                                  size="sm"
-                                />
-                              </Group>
-                            </Stack>
-                          </Box>
-                        )}
-                      </Card>
                     </Box>
                   )}
                 </Card>
