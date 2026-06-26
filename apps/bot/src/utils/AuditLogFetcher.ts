@@ -24,7 +24,7 @@ export class AuditLogFetcher {
         );
 
         if (entry) {
-          return entry;
+          return entry as GuildAuditLogsEntry<T>;
         }
       } catch (error) {
         console.error(`Failed to fetch audit log for action ${actionType}:`, error);
