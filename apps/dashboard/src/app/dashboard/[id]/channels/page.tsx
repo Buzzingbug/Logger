@@ -2,11 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../../components/DashboardLayout';
-import { CategoryCard } from '../../../components/CategoryCard';
-import { Select } from '../../../components/Select';
 import { EVENT_CATEGORIES, EVENT_NAMES, GuildConfig } from '@logger/shared';
-import { Shield, User, MessageSquare, Mic, Activity, File, Server, ShieldCheck, Hash, Settings } from 'lucide-react';
-import { Toggle } from '../../../components/Toggle';
+import { IconShield, IconUser, IconMessageCircle, IconMicrophone, IconActivity, IconFile, IconServer, IconShieldCheck, IconHash, IconSettings } from '@tabler/icons-react';
+import { Card, Select, Switch, Text, Group, Stack, Grid, Title, Divider, Box, Loader, Center, Indicator } from '@mantine/core';
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -18,16 +16,16 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 const CATEGORY_META: Record<string, { title: string, desc: string, icon: React.ReactNode }> = {
-  Modlogs: { title: 'Modlogs', desc: 'Log moderative actions like bans, kicks, and timeouts.', icon: <Shield size={20} /> },
-  Members: { title: 'Members', desc: 'Log member joins, leaves, and profile updates.', icon: <User size={20} /> },
-  Messages: { title: 'Messages', desc: 'Log message edits, deletions, and pinned messages.', icon: <MessageSquare size={20} /> },
-  Voice: { title: 'Voice', desc: 'Log voice channel joins, leaves, and activity.', icon: <Mic size={20} /> },
-  Actions: { title: 'Actions', desc: 'Log server action events.', icon: <Activity size={20} /> },
-  Files: { title: 'Files', desc: 'Log file uploads and deletions.', icon: <File size={20} /> },
-  Server: { title: 'Server', desc: 'Log server property updates.', icon: <Server size={20} /> },
-  Roles: { title: 'Roles', desc: 'Log role creation, edits, and deletions.', icon: <ShieldCheck size={20} /> },
-  Channels: { title: 'Channels', desc: 'Log channel creation, edits, and deletions.', icon: <Hash size={20} /> },
-  Internal: { title: 'Logger Events', desc: 'Log internal Logger system events.', icon: <Settings size={20} /> },
+  Modlogs: { title: 'Modlogs', desc: 'Log moderative actions like bans, kicks, and timeouts.', icon: <IconShield size={20} /> },
+  Members: { title: 'Members', desc: 'Log member joins, leaves, and profile updates.', icon: <IconUser size={20} /> },
+  Messages: { title: 'Messages', desc: 'Log message edits, deletions, and pinned messages.', icon: <IconMessageCircle size={20} /> },
+  Voice: { title: 'Voice', desc: 'Log voice channel joins, leaves, and activity.', icon: <IconMicrophone size={20} /> },
+  Actions: { title: 'Actions', desc: 'Log server action events.', icon: <IconActivity size={20} /> },
+  Files: { title: 'Files', desc: 'Log file uploads and deletions.', icon: <IconFile size={20} /> },
+  Server: { title: 'Server', desc: 'Log server property updates.', icon: <IconServer size={20} /> },
+  Roles: { title: 'Roles', desc: 'Log role creation, edits, and deletions.', icon: <IconShieldCheck size={20} /> },
+  Channels: { title: 'Channels', desc: 'Log channel creation, edits, and deletions.', icon: <IconHash size={20} /> },
+  Internal: { title: 'Logger Events', desc: 'Log internal Logger system events.', icon: <IconSettings size={20} /> },
 };
 
 export default function ChannelsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -63,7 +61,16 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
     });
   }, [debouncedConfig, guildId]);
 
-  if (!config) return <div className="text-text text-center mt-20 animate-pulse font-medium">Loading configuration...</div>;
+  if (!config) return (
+    <DashboardLayout guildId={guildId}>
+      <Center mt={100}>
+        <Stack align="center">
+          <Loader color="violet" type="bars" />
+          <Text c="dimmed">Loading configuration...</Text>
+        </Stack>
+      </Center>
+    </DashboardLayout>
+  );
 
   const channelOptions = channels.map(c => ({ value: c.id, label: `# ${c.name}` }));
 
@@ -87,7 +94,8 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
     return eventIds.some(id => config.enabledEvents.includes(id));
   };
 
-  const handleChannelChange = (category: string, channelId: string) => {
+  const handleChannelChange = (category: string, channelId: string | null) => {
+    if (!channelId) return;
     setConfig(prev => {
       if (!prev) return prev;
       return {
@@ -125,98 +133,138 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
 
   return (
     <DashboardLayout guildId={guildId}>
-      <div className="mb-6 md:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-black text-text uppercase tracking-tight mb-2">Channels Configuration</h2>
-        <p className="text-text-muted text-sm sm:text-base max-w-2xl">Configure channel-specific logging settings for different server activities. Events will be logged to these channels when they occur.</p>
-      </div>
+      <Stack mb="xl">
+        <Title order={2} fw={900} tt="uppercase" lts={1}>Channels Configuration</Title>
+        <Text c="dimmed" size="sm" maw={600}>
+          Configure channel-specific logging settings for different server activities. Events will be logged to these channels when they occur.
+        </Text>
+      </Stack>
       
-      <div className="flex justify-end mb-6 h-6 items-center">
-        {savedStatus === 'saving' && <span className="text-warning text-sm font-bold animate-pulse flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-warning"></div> Saving changes...</span>}
-        {savedStatus === 'saved' && <span className="text-success text-sm font-bold flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-success"></div> All changes saved</span>}
-      </div>
+      <Group justify="flex-end" mb="md" h={24}>
+        {savedStatus === 'saving' && (
+          <Group gap="xs">
+            <Loader size="xs" color="yellow" type="dots" />
+            <Text size="sm" c="yellow" fw={700}>Saving changes...</Text>
+          </Group>
+        )}
+        {savedStatus === 'saved' && (
+          <Group gap="xs">
+            <Indicator size={8} color="teal" />
+            <Text size="sm" c="teal" fw={700}>All changes saved</Text>
+          </Group>
+        )}
+      </Group>
 
-      <div className="flex flex-col">
-        <div className="relative z-[50] focus-within:z-[60] hover:z-[60] bg-surface border border-border p-5 md:p-6 rounded-2xl mb-8 spring-transition hover:border-border-glow group card-gradient shadow-lg">
-          <h3 className="text-lg font-semibold text-text mb-3 flex items-center gap-2">
-            <span className="w-2 h-6 bg-accent rounded-full hidden sm:block"></span>
-            Main Serverlog Channel
-          </h3>
+      <Stack gap="xl">
+        <Card shadow="sm" p="lg" radius="md" withBorder>
+          <Group mb="md">
+            <Box w={4} h={24} bg="violet" style={{ borderRadius: 4 }} />
+            <Title order={4}>Main Serverlog Channel</Title>
+          </Group>
           <Select 
-            value={config.channelRoutes['main'] || ''} 
+            value={config.channelRoutes['main'] || null} 
             onChange={val => handleChannelChange('main', val)}
-            options={channelOptions} 
+            data={channelOptions} 
             placeholder="Select channel"
+            searchable
+            clearable
           />
-        </div>
+        </Card>
 
-        {/* Grid Layout for Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {Object.entries(CATEGORY_META).map(([key, meta], index) => {
+        <Grid>
+          {Object.entries(CATEGORY_META).map(([key, meta]) => {
             const eventIds = EVENT_CATEGORIES[key as keyof typeof EVENT_CATEGORIES] || [];
+            const enabled = isCategoryEnabled(key);
+
             return (
-              <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60] flex h-full">
-                <div className="w-full h-full">
-                  <CategoryCard
-                    title={meta.title}
-                    description={meta.desc}
-                    icon={meta.icon}
-                    enabled={isCategoryEnabled(key)}
-                    onToggle={(checked) => toggleCategory(key, checked)}
-                  >
-                    <div className="flex flex-col gap-4 w-full mt-2">
+              <Grid.Col key={key} span={{ base: 12, lg: 6, xl: 4 }}>
+                <Card shadow="sm" p="lg" radius="md" withBorder h="100%">
+                  <Group justify="space-between" align="flex-start" mb="md">
+                    <Box style={{ flex: 1 }}>
+                      <Group gap="sm" mb="xs">
+                        <Box c={enabled ? 'violet' : 'dimmed'} style={{ transition: 'color 0.2s' }}>
+                          {meta.icon}
+                        </Box>
+                        <Title order={5}>{meta.title}</Title>
+                      </Group>
+                      <Text size="xs" c="dimmed" lh={1.4}>{meta.desc}</Text>
+                    </Box>
+                    <Switch 
+                      checked={enabled} 
+                      onChange={(e) => toggleCategory(key, e.currentTarget.checked)}
+                      color="violet"
+                      size="md"
+                    />
+                  </Group>
+
+                  {enabled && (
+                    <Box mt="md" pt="md" style={{ borderTop: '1px solid var(--mantine-color-default-border)' }}>
                       <Select 
-                        value={config.channelRoutes[key] || ''} 
+                        value={config.channelRoutes[key] || null} 
                         onChange={val => handleChannelChange(key, val)}
-                        options={channelOptions} 
-                        placeholder="Select channel"
-                        disabled={!isCategoryEnabled(key)}
+                        data={channelOptions} 
+                        placeholder="Inherit main channel"
+                        searchable
+                        clearable
+                        mb="md"
                       />
                       
-                      <div className="flex flex-col mt-2 bg-bg/40 rounded-xl p-3 border border-border/30">
-                        <h4 className="text-[10px] uppercase tracking-wider text-text-muted font-bold mb-1">Individual Events</h4>
-                        {eventIds.map(eventId => (
-                          <div key={eventId} className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-0 group/event">
-                            <span className="text-[12px] text-text/90 font-medium group-hover/event:text-white spring-transition">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
-                            <Toggle 
-                              checked={config.enabledEvents.includes(eventId)} 
-                              onChange={(checked) => toggleEvent(eventId, checked)} 
-                            />
-                          </div>
-                        ))}
+                      <Card withBorder bg="dark.7" p="md" radius="sm">
+                        <Text size="xs" fw={700} tt="uppercase" c="dimmed" mb="sm">Individual Events</Text>
+                        <Stack gap="xs">
+                          {eventIds.map(eventId => (
+                            <Group key={eventId} justify="space-between" wrap="nowrap">
+                              <Text size="sm" fw={500}>{EVENT_NAMES[eventId] || `Event ${eventId}`}</Text>
+                              <Switch 
+                                checked={config.enabledEvents.includes(eventId)} 
+                                onChange={(e) => toggleEvent(eventId, e.currentTarget.checked)} 
+                                color="violet"
+                                size="sm"
+                              />
+                            </Group>
+                          ))}
+                        </Stack>
 
                         {key === 'Messages' && (
-                          <>
-                            <div className="flex items-center justify-between py-2 mt-1 pt-2 border-t border-white/10 group/event">
-                              <div className="flex flex-col pr-4">
-                                <span className="text-[12px] text-text/90 font-medium mb-0.5 group-hover/event:text-white spring-transition">Log Text Message Deletes</span>
-                                <span className="text-[10px] text-text-muted leading-tight">Log purely text messages</span>
-                              </div>
-                              <Toggle 
-                                checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
-                                onChange={(checked) => toggleOtherOption('logTextMessageDeletes', checked)} 
-                              />
-                            </div>
-                            <div className="flex items-center justify-between py-2 group/event">
-                              <div className="flex flex-col pr-4">
-                                <span className="text-[12px] text-text/90 font-medium mb-0.5 group-hover/event:text-white spring-transition">Log Media Message Deletes</span>
-                                <span className="text-[10px] text-text-muted leading-tight">Attach links for images/videos</span>
-                              </div>
-                              <Toggle 
-                                checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
-                                onChange={(checked) => toggleOtherOption('logMediaMessageDeletes', checked)} 
-                              />
-                            </div>
-                          </>
+                          <Box mt="md">
+                            <Divider my="sm" />
+                            <Stack gap="xs">
+                              <Group justify="space-between" wrap="nowrap">
+                                <Box>
+                                  <Text size="sm" fw={500}>Log Text Message Deletes</Text>
+                                  <Text size="xs" c="dimmed">Log purely text messages</Text>
+                                </Box>
+                                <Switch 
+                                  checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
+                                  onChange={(e) => toggleOtherOption('logTextMessageDeletes', e.currentTarget.checked)} 
+                                  color="violet"
+                                  size="sm"
+                                />
+                              </Group>
+                              <Group justify="space-between" wrap="nowrap">
+                                <Box>
+                                  <Text size="sm" fw={500}>Log Media Message Deletes</Text>
+                                  <Text size="xs" c="dimmed">Attach links for images/videos</Text>
+                                </Box>
+                                <Switch 
+                                  checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
+                                  onChange={(e) => toggleOtherOption('logMediaMessageDeletes', e.currentTarget.checked)} 
+                                  color="violet"
+                                  size="sm"
+                                />
+                              </Group>
+                            </Stack>
+                          </Box>
                         )}
-                      </div>
-                    </div>
-                  </CategoryCard>
-                </div>
-              </div>
+                      </Card>
+                    </Box>
+                  )}
+                </Card>
+              </Grid.Col>
             );
           })}
-        </div>
-      </div>
+        </Grid>
+      </Stack>
     </DashboardLayout>
   );
 }

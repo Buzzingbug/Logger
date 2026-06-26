@@ -1,82 +1,111 @@
 'use client';
 
 import React from 'react';
-import { Sidebar } from './Sidebar';
-import Link from 'next/link';
-import { Search, Bell, HelpCircle, Sun, Moon } from 'lucide-react';
+import { AppShell, Burger, Group, Text, NavLink, Box, Button, Card, Avatar } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconLayoutDashboard, IconSettings, IconShieldOff, IconServerCog, IconCrown, IconSearch, IconBell, IconHelp, IconSparkles } from '@tabler/icons-react';
+import { usePathname, useRouter } from 'next/navigation';
 
 export function DashboardLayout({ children, guildId }: { children: React.ReactNode, guildId: string }) {
+  const [opened, { toggle }] = useDisclosure();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const links = [
+    { name: 'Channels', path: `/dashboard/${guildId}/channels`, icon: IconLayoutDashboard },
+    { name: 'Ignore Options', path: `/dashboard/${guildId}/ignore`, icon: IconShieldOff },
+    { name: 'Individual Config', path: `/dashboard/${guildId}/individual`, icon: IconSettings },
+    { name: 'Other Options', path: `/dashboard/${guildId}/other`, icon: IconServerCog },
+  ];
+
   return (
-    <div className="min-h-screen bg-bg text-text font-sans flex flex-col overflow-x-hidden">
-      <header className="border-b border-border bg-bg/95 backdrop-blur-xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between sticky top-0 z-50 h-[73px]">
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{ width: 280, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Group gap="sm">
+              <Box bg="violet.9" c="white" p={6} style={{ borderRadius: 8 }}>
+                <Text fw={900} size="sm">PP</Text>
+              </Box>
+              <Box>
+                <Text fw={700} size="sm" lh={1}>Paradise Prime</Text>
+                <Text size="xs" c="dimmed">Server</Text>
+              </Box>
+            </Group>
+          </Group>
+
+          <Group visibleFrom="sm">
+            <Box bg="dark.6" px="xl" py="xs" style={{ borderRadius: 20, width: 300, cursor: 'text' }}>
+              <Group gap="xs">
+                <IconSearch size={16} color="gray" />
+                <Text size="sm" c="dimmed">Search anything...</Text>
+              </Group>
+            </Box>
+          </Group>
+
+          <Group gap="md">
+            <IconBell size={20} color="gray" />
+            <IconHelp size={20} color="gray" />
+            <Group gap="xs" visibleFrom="xs">
+              <Box ta="right">
+                <Text size="sm" fw={700} lh={1}>Prime Admin</Text>
+                <Text size="xs" c="dimmed">Administrator</Text>
+              </Box>
+              <Avatar radius="xl" color="violet" />
+            </Group>
+          </Group>
+        </Group>
+      </AppShell.Header>
+
+      <AppShell.Navbar p="md">
+        <Group mb="md" px="xs">
+          <IconSparkles size={24} color="var(--mantine-color-violet-6)" />
+          <Text fw={900} size="xl" lts={2}>LOGGER</Text>
+        </Group>
         
-        {/* Left: Server Selector Mock */}
-        <div className="flex items-center gap-4">
-          <div className="hidden sm:flex items-center gap-3 bg-surface border border-border px-4 py-2 rounded-xl cursor-pointer hover:border-accent/50 spring-transition">
-            <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent font-bold">
-              PP
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold text-text leading-none mb-1">Paradise Prime</span>
-              <span className="text-[10px] font-medium text-text-muted leading-none">Server</span>
-            </div>
-            <div className="w-2 h-2 rounded-full bg-success ml-4"></div>
-          </div>
-        </div>
-
-        {/* Center: Search Bar */}
-        <div className="hidden md:flex flex-1 max-w-md mx-4">
-          <div className="relative w-full">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
-            <input 
-              type="text" 
-              placeholder="Search anything..." 
-              className="w-full bg-surface border border-border rounded-xl py-2 pl-9 pr-4 text-sm text-text placeholder:text-text-muted focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 spring-transition"
-            />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 bg-bg border border-border rounded text-[10px] font-mono text-text-muted">⌘</kbd>
-              <kbd className="px-1.5 py-0.5 bg-bg border border-border rounded text-[10px] font-mono text-text-muted">K</kbd>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Actions & Profile */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="hidden sm:flex items-center gap-4 text-text-muted">
-            <button className="relative hover:text-text spring-transition">
-              <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-[9px] font-bold text-white flex items-center justify-center border-2 border-bg">3</span>
-            </button>
-            <button className="hover:text-text spring-transition"><HelpCircle size={20} /></button>
-            <button className="hover:text-text spring-transition"><Sun size={20} /></button>
-          </div>
-          
-          <div className="h-6 w-px bg-border hidden sm:block" />
-
-          {/* Profile */}
-          <div className="flex items-center gap-3 cursor-pointer group">
-            <div className="hidden sm:flex flex-col items-end">
-              <span className="text-sm font-bold text-text group-hover:text-accent spring-transition leading-none mb-1">Prime Admin</span>
-              <span className="text-[10px] font-medium text-text-muted leading-none">Administrator</span>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-surface-2 border-2 border-border group-hover:border-accent spring-transition overflow-hidden">
-              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=PrimeAdmin&backgroundColor=6D28D9" alt="User Avatar" className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main App Container */}
-      <div className="flex flex-1 flex-col md:flex-row relative">
-        <Sidebar guildId={guildId} />
+        <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb="sm" px="xs">Configuration</Text>
         
-        {/* Main Content Area */}
-        <main className="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both">
-            {children}
-          </div>
-        </main>
-      </div>
-    </div>
+        {links.map((link) => (
+          <NavLink
+            key={link.name}
+            href={link.path}
+            label={link.name}
+            leftSection={<link.icon size={18} stroke={1.5} />}
+            active={pathname.startsWith(link.path)}
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(link.path);
+              if (opened) toggle();
+            }}
+            variant="filled"
+            style={{ borderRadius: 8, marginBottom: 4 }}
+          />
+        ))}
+
+        <Box mt="auto">
+          <Card shadow="sm" p="lg" radius="md" withBorder>
+            <Group gap="xs" mb="xs">
+              <IconCrown size={20} color="gold" />
+              <Text fw={700} size="sm">Upgrade to Premium</Text>
+            </Group>
+            <Text size="xs" c="dimmed" mb="md">
+              Unlock powerful features and advanced security.
+            </Text>
+            <Button variant="light" color="violet" fullWidth radius="md">
+              Upgrade Now
+            </Button>
+          </Card>
+        </Box>
+      </AppShell.Navbar>
+
+      <AppShell.Main>
+        {children}
+      </AppShell.Main>
+    </AppShell>
   );
 }

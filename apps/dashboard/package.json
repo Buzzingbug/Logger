@@ -12,6 +12,9 @@
   "dependencies": {
     "@logger/db": "*",
     "@logger/shared": "*",
+    "@mantine/core": "^9.4.0",
+    "@mantine/hooks": "^9.4.0",
+    "@tabler/icons-react": "^3.44.0",
     "@tailwindcss/postcss": "^4.0.0",
     "concurrently": "^10.0.3",
     "lucide-react": "^1.21.0",

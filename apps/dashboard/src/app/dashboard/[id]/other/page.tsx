@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../../components/DashboardLayout';
-import { Toggle } from '../../../components/Toggle';
-import { Select } from '../../../components/Select';
 import { GuildConfig } from '@logger/shared';
+import { Card, Select, Switch, Text, Group, Stack, Title, Box, Loader, Center, Indicator, Divider, ThemeIcon } from '@mantine/core';
+import { IconBox } from '@tabler/icons-react';
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -42,7 +42,16 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
     });
   }, [debouncedConfig, guildId]);
 
-  if (!config) return <div className="text-white text-center mt-20">Loading configuration...</div>;
+  if (!config) return (
+    <DashboardLayout guildId={guildId}>
+      <Center mt={100}>
+        <Stack align="center">
+          <Loader color="violet" type="bars" />
+          <Text c="dimmed">Loading configuration...</Text>
+        </Stack>
+      </Center>
+    </DashboardLayout>
+  );
 
   const getOther = (key: string, defaultValue: any) => {
     return (config.otherOptions as any)?.[key] ?? defaultValue;
@@ -63,88 +72,108 @@ export default function OtherOptionsPage({ params }: { params: Promise<{ id: str
 
   return (
     <DashboardLayout guildId={guildId}>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-2xl font-black text-white uppercase tracking-wider mb-2">OTHER OPTIONS</h2>
-          <p className="text-[#8b8b99] text-sm">Miscellaneous settings and integrations.</p>
-        </div>
-        <div className="h-6">
-          {savedStatus === 'saving' && <span className="text-[#FEE75C] text-sm font-bold">Saving...</span>}
-          {savedStatus === 'saved' && <span className="text-[#57F287] text-sm font-bold">Saved ✓</span>}
-        </div>
-      </div>
+      <Stack mb="xl">
+        <Title order={2} fw={900} tt="uppercase" lts={1}>Other Options</Title>
+        <Text c="dimmed" size="sm" maw={600}>
+          Miscellaneous settings and integrations.
+        </Text>
+      </Stack>
+      
+      <Group justify="flex-end" mb="md" h={24}>
+        {savedStatus === 'saving' && (
+          <Group gap="xs">
+            <Loader size="xs" color="yellow" type="dots" />
+            <Text size="sm" c="yellow" fw={700}>Saving changes...</Text>
+          </Group>
+        )}
+        {savedStatus === 'saved' && (
+          <Group gap="xs">
+            <Indicator size={8} color="teal" />
+            <Text size="sm" c="teal" fw={700}>All changes saved</Text>
+          </Group>
+        )}
+      </Group>
 
-      <div className="bg-[#18181b]/50 p-4 sm:p-5 md:p-6 rounded-xl border border-[#27272a]">
+      <Card shadow="sm" p="xl" radius="md" withBorder>
         
         {/* SPOILERS */}
-        <div className="border-b border-[#27272a] pb-6 sm:pb-8 mb-6 sm:mb-8">
-          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-1 sm:mb-2">SPOILERS</h3>
-          <p className="text-xs sm:text-sm text-[#a1a1aa] mb-4">Enable and spoilers are applied to media sent to the serverlogs</p>
-          <Toggle 
+        <Box mb="xl">
+          <Title order={5} tt="uppercase" lts={1} mb="xs">Spoilers</Title>
+          <Text size="sm" c="dimmed" mb="md">Enable and spoilers are applied to media sent to the serverlogs</Text>
+          <Switch 
             checked={getOther('spoilers', false)} 
-            onChange={v => updateOther('spoilers', v)} 
+            onChange={e => updateOther('spoilers', e.currentTarget.checked)} 
+            color="violet"
+            size="md"
           />
-        </div>
+        </Box>
+
+        <Divider my="xl" />
 
         {/* BUTTONS */}
-        <div className="border-b border-[#27272a] pb-6 sm:pb-8 mb-6 sm:mb-8">
-          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-1 sm:mb-2">BUTTONS</h3>
-          <p className="text-xs sm:text-sm text-[#a1a1aa] mb-4">Toggle which buttons are included with each log</p>
-          <div className="w-full sm:w-64">
-            <Select 
-              value={getOther('buttons', 'all')} 
-              onChange={val => updateOther('buttons', val)}
-              options={[
-                { value: 'all', label: 'All Event Buttons' },
-                { value: 'none', label: 'No Event Buttons' },
-                { value: 'important', label: 'Important Only' }
-              ]}
-            />
-          </div>
-        </div>
+        <Box mb="xl">
+          <Title order={5} tt="uppercase" lts={1} mb="xs">Buttons</Title>
+          <Text size="sm" c="dimmed" mb="md">Toggle which buttons are included with each log</Text>
+          <Select 
+            value={getOther('buttons', 'all')} 
+            onChange={val => updateOther('buttons', val)}
+            data={[
+              { value: 'all', label: 'All Event Buttons' },
+              { value: 'none', label: 'No Event Buttons' },
+              { value: 'important', label: 'Important Only' }
+            ]}
+            maw={300}
+          />
+        </Box>
 
-        <div className="bg-[#18181b]/50 border border-[#27272a] p-4 sm:p-5 rounded-xl mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 transition-all hover:bg-[#18181b] hover:border-[#3b82f6]/40">
-          <div className="flex-1">
-            <h3 className="flex items-center gap-2 text-base sm:text-lg font-bold text-[#e4e4e7]">Embed Format</h3>
-            <p className="text-xs sm:text-sm text-[#a1a1aa] mt-1">Change the visual style of log embeds</p>
-          </div>
-          <div className="w-full sm:w-64">
+        <Divider my="xl" />
+
+        {/* FORMAT */}
+        <Box mb="xl">
+          <Group justify="space-between" align="flex-start" wrap="nowrap">
+            <Box>
+              <Title order={5} mb="xs">Embed Format</Title>
+              <Text size="sm" c="dimmed">Change the visual style of log embeds</Text>
+            </Box>
             <Select 
               value={getOther('format', 'standard')} 
               onChange={val => updateOther('format', val)}
-              options={[
+              data={[
                 { value: 'standard', label: 'Standard (Default)' },
                 { value: 'compact', label: 'Compact' },
                 { value: 'detailed', label: 'Detailed (Pro)' }
               ]}
+              w={250}
             />
-          </div>
-        </div>
+          </Group>
+        </Box>
+
+        <Divider my="xl" />
 
         {/* BOT INTEGRATIONS */}
-        <div className="pb-2">
-          <h3 className="text-base sm:text-lg font-bold text-[#e4e4e7] uppercase tracking-widest mb-4 sm:mb-6">BOT INTEGRATIONS</h3>
+        <Box>
+          <Title order={5} tt="uppercase" lts={1} mb="lg">Bot Integrations</Title>
           
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-            <div className="flex gap-3">
-              <div className="mt-1 text-[#a1a1aa]">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-              </div>
-              <div>
-                <h4 className="text-sm sm:text-base font-bold text-[#e4e4e7]">PluralKit Compatibility</h4>
-                <p className="text-xs sm:text-sm text-[#a1a1aa] mt-1 sm:mb-4 max-w-md">Automatically handle PluralKit interactions without cluttering up the logs</p>
-              </div>
-            </div>
-            <div className="pl-9 sm:pl-0 sm:self-center">
-              <Toggle 
-                checked={getOther('pluralkit', false)} 
-                onChange={v => updateOther('pluralkit', v)} 
-              />
-            </div>
-          </div>
-        </div>
+          <Group justify="space-between" wrap="nowrap">
+            <Group gap="md">
+              <ThemeIcon size="lg" variant="light" color="violet">
+                <IconBox size={20} />
+              </ThemeIcon>
+              <Box>
+                <Title order={6}>PluralKit Compatibility</Title>
+                <Text size="sm" c="dimmed">Automatically handle PluralKit interactions without cluttering up the logs</Text>
+              </Box>
+            </Group>
+            <Switch 
+              checked={getOther('pluralkit', false)} 
+              onChange={e => updateOther('pluralkit', e.currentTarget.checked)} 
+              color="violet"
+              size="md"
+            />
+          </Group>
+        </Box>
 
-      </div>
+      </Card>
     </DashboardLayout>
   );
 }
