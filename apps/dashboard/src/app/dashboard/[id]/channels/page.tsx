@@ -21,7 +21,7 @@ const CATEGORY_META: Record<string, { title: string, desc: string, icon: React.R
   Messages: { title: 'Messages', desc: 'Log message edits, deletions, and pinned messages.', icon: <IconMessageCircle size={20} /> },
   Voice: { title: 'Voice', desc: 'Log voice channel joins, leaves, and activity.', icon: <IconMicrophone size={20} /> },
   Actions: { title: 'Actions', desc: 'Log server action events.', icon: <IconActivity size={20} /> },
-  Files: { title: 'Files', desc: 'Log file uploads and deletions.', icon: <IconFile size={20} /> },
+
   Server: { title: 'Server', desc: 'Log server property updates.', icon: <IconServer size={20} /> },
   Roles: { title: 'Roles', desc: 'Log role creation, edits, and deletions.', icon: <IconShieldCheck size={20} /> },
   Channels: { title: 'Channels', desc: 'Log channel creation, edits, and deletions.', icon: <IconHash size={20} /> },

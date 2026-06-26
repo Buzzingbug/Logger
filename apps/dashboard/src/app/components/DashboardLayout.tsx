@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { AppShell, Burger, Group, Text, NavLink, Box, Button, Card, Avatar } from '@mantine/core';
+import { AppShell, Burger, Group, Text, NavLink, Box, Button, Card, Avatar, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconLayoutDashboard, IconSettings, IconShieldOff, IconServerCog, IconCrown, IconSearch, IconBell, IconHelp, IconSparkles } from '@tabler/icons-react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -64,12 +64,16 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
           </Group>
 
           <Group visibleFrom="sm">
-            <Box bg="dark.6" px="xl" py="xs" style={{ borderRadius: 20, width: 300, cursor: 'text' }}>
-              <Group gap="xs">
-                <IconSearch size={16} color="gray" />
-                <Text size="sm" c="dimmed">Search anything...</Text>
-              </Group>
-            </Box>
+            <TextInput
+              placeholder="Search anything..."
+              leftSection={<IconSearch size={16} />}
+              radius="xl"
+              w={300}
+              variant="filled"
+              styles={{
+                input: { backgroundColor: 'var(--mantine-color-dark-6)' }
+              }}
+            />
           </Group>
 
           <Group gap="md">
