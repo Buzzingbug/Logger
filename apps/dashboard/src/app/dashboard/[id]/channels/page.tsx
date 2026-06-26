@@ -4,8 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { DashboardLayout } from '../../../components/DashboardLayout';
 import { CategoryCard } from '../../../components/CategoryCard';
 import { Select } from '../../../components/Select';
-import { EVENT_CATEGORIES, GuildConfig } from '@logger/shared';
+import { EVENT_CATEGORIES, EVENT_NAMES, GuildConfig } from '@logger/shared';
 import { Shield, User, MessageSquare, Mic, Activity, File, Server, ShieldCheck, Hash, Settings } from 'lucide-react';
+import { Toggle } from '../../../components/Toggle';
 
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -99,6 +100,29 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
     });
   };
 
+  const toggleEvent = (eventId: number, enabled: boolean) => {
+    setConfig(prev => {
+      if (!prev) return prev;
+      let newEvents = new Set(prev.enabledEvents);
+      if (enabled) newEvents.add(eventId);
+      else newEvents.delete(eventId);
+      return { ...prev, enabledEvents: Array.from(newEvents) };
+    });
+  };
+
+  const toggleOtherOption = (optionKey: string, enabled: boolean) => {
+    setConfig(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        otherOptions: {
+          ...(prev.otherOptions as Record<string, any> || {}),
+          [optionKey]: enabled
+        }
+      };
+    });
+  };
+
   return (
     <DashboardLayout guildId={guildId}>
       <div className="mb-6 md:mb-8">
@@ -126,25 +150,68 @@ export default function ChannelsPage({ params }: { params: Promise<{ id: string 
         </div>
 
         <div className="flex flex-col">
-          {Object.entries(CATEGORY_META).map(([key, meta], index) => (
-            <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60]">
-              <CategoryCard
-                title={meta.title}
-                description={meta.desc}
-                icon={meta.icon}
-                enabled={isCategoryEnabled(key)}
-                onToggle={(checked) => toggleCategory(key, checked)}
-              >
-                <Select 
-                  value={config.channelRoutes[key] || ''} 
-                  onChange={val => handleChannelChange(key, val)}
-                  options={channelOptions} 
-                  placeholder="Select channel"
-                  disabled={!isCategoryEnabled(key)}
-                />
-              </CategoryCard>
-            </div>
-          ))}
+          {Object.entries(CATEGORY_META).map(([key, meta], index) => {
+            const eventIds = EVENT_CATEGORIES[key as keyof typeof EVENT_CATEGORIES] || [];
+            return (
+              <div key={key} style={{ zIndex: 49 - index }} className="relative focus-within:z-[60] hover:z-[60]">
+                <CategoryCard
+                  title={meta.title}
+                  description={meta.desc}
+                  icon={meta.icon}
+                  enabled={isCategoryEnabled(key)}
+                  onToggle={(checked) => toggleCategory(key, checked)}
+                >
+                  <div className="flex flex-col gap-4 w-full">
+                    <Select 
+                      value={config.channelRoutes[key] || ''} 
+                      onChange={val => handleChannelChange(key, val)}
+                      options={channelOptions} 
+                      placeholder="Select channel"
+                      disabled={!isCategoryEnabled(key)}
+                    />
+                    
+                    <div className="flex flex-col gap-2 mt-2 bg-surface/30 p-3 rounded-xl border border-border/50">
+                      <h4 className="text-xs uppercase tracking-wider text-text-muted font-bold mb-1">Individual Events</h4>
+                      {eventIds.map(eventId => (
+                        <div key={eventId} className="flex items-center justify-between py-1">
+                          <span className="text-sm text-text font-medium">{EVENT_NAMES[eventId] || `Event ${eventId}`}</span>
+                          <Toggle 
+                            checked={config.enabledEvents.includes(eventId)} 
+                            onChange={(checked) => toggleEvent(eventId, checked)} 
+                          />
+                        </div>
+                      ))}
+
+                      {key === 'Messages' && (
+                        <>
+                          <div className="flex items-center justify-between py-1 mt-2 pt-3 border-t border-border/50">
+                            <div className="flex flex-col">
+                              <span className="text-sm text-text font-medium">Log Text Message Deletes</span>
+                              <span className="text-xs text-text-muted">Log when a purely text message is deleted</span>
+                            </div>
+                            <Toggle 
+                              checked={(config.otherOptions as any)?.logTextMessageDeletes ?? true} 
+                              onChange={(checked) => toggleOtherOption('logTextMessageDeletes', checked)} 
+                            />
+                          </div>
+                          <div className="flex items-center justify-between py-1">
+                            <div className="flex flex-col">
+                              <span className="text-sm text-text font-medium">Log Media Message Deletes</span>
+                              <span className="text-xs text-text-muted">Attach media links when images/videos are deleted</span>
+                            </div>
+                            <Toggle 
+                              checked={(config.otherOptions as any)?.logMediaMessageDeletes ?? true} 
+                              onChange={(checked) => toggleOtherOption('logMediaMessageDeletes', checked)} 
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </CategoryCard>
+              </div>
+            );
+          })}
         </div>
       </div>
     </DashboardLayout>

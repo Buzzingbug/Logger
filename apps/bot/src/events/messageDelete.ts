@@ -46,19 +46,52 @@ const handler: EventHandler<'messageDelete'> = {
     if (!targetChannelId) return;
 
     // 4. Try to recover content from cache
-    let content = message.content || '*Message content not cached.*';
+    let content = message.content || '';
     const cached = client.messageCache.get(message.id);
+    let attachments: { name: string; url: string; proxyURL: string }[] = [];
+
     if (cached) {
-      content = cached.content || '*No content.*';
+      content = cached.content || content;
+      attachments = cached.attachments;
+    } else if (!message.partial) {
+      attachments = message.attachments.map(a => ({
+        name: a.name,
+        url: a.url,
+        proxyURL: a.proxyURL
+      }));
     }
 
+    const hasMedia = attachments.length > 0;
+
+    // Check specific log options
+    const logText = config.otherOptions?.logTextMessageDeletes ?? true;
+    const logMedia = config.otherOptions?.logMediaMessageDeletes ?? true;
+
+    if (hasMedia && !logMedia) return;
+    if (!hasMedia && !logText) return;
+
     // 5. Build Embed
+    let description = `**Author:** <@${message.author?.id || cached?.authorId || 'Unknown'}>\n**Channel:** <#${message.channelId}>\n`;
+    
+    if (content) {
+      description += `\n**Content:**\n${content}\n`;
+    } else if (!hasMedia) {
+      description += `\n**Content:**\n*Message content not cached.*\n`;
+    }
+
+    if (hasMedia) {
+      description += `\n**Deleted Media (${attachments.length}):**\n`;
+      attachments.forEach((a) => {
+        description += `[${a.name}](${a.proxyURL})\n`;
+      });
+    }
+
     const embed = LogEmbedBuilder.build({
       color: config.embedColors['Messages'] || EMBED_COLORS.Messages,
       authorName: 'Message Deleted',
       authorIconURL: client.user?.displayAvatarURL() || '',
       typeId: eventId,
-      description: `**Author:** <@${message.author?.id || cached?.authorId || 'Unknown'}>\n**Channel:** <#${message.channelId}>\n\n**Content:**\n${content}`,
+      description: description.trim(),
       messageId: message.id,
     });
 
