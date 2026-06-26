@@ -88,7 +88,13 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
 
       <AppShell.Navbar p="md">
         <Group mb="md" px="xs">
-          <Image src="/logo.jpg" alt="Logger Logo" width={32} height={32} />
+          <Image 
+            src="/logo.jpg" 
+            alt="Logger Logo" 
+            width={32} 
+            height={32} 
+            style={{ borderRadius: '50%', objectFit: 'cover' }} 
+          />
           <Text fw={900} size="xl" lts={2}>LOGGER</Text>
         </Group>
         

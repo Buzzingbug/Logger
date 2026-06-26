@@ -102,7 +102,8 @@ export function LandingUI({ isLoggedIn }: { isLoggedIn: boolean }) {
               background: 'linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              lineHeight: 1
+              lineHeight: 1.2,
+              paddingBottom: '0.1em'
             }}
           >
             Logger.
