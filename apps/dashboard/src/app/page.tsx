@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../lib/auth";
 import Link from "next/link";
+import Image from "next/image";
 import { LoginButton } from "./components/LoginButton";
 import { Container, Center, Stack, Title, Text, Button, Box } from "@mantine/core";
-import { IconSparkles } from "@tabler/icons-react";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -75,16 +75,23 @@ export default async function Home() {
           
           <Center 
             style={{ 
-              width: 80, 
-              height: 80, 
-              borderRadius: 24, 
+              width: 120, 
+              height: 120, 
+              borderRadius: '50%', 
               background: 'rgba(255, 255, 255, 0.05)', 
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(139, 92, 246, 0.3)',
               backdropFilter: 'blur(10px)',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)'
+              boxShadow: '0 20px 40px rgba(139, 92, 246, 0.2)',
+              overflow: 'hidden'
             }}
           >
-            <IconSparkles size={40} color="#8b5cf6" stroke={1.5} />
+            <Image 
+              src="/logo.png" 
+              alt="Logger Logo" 
+              width={120} 
+              height={120} 
+              style={{ objectFit: 'cover' }}
+            />
           </Center>
 
           <Title 

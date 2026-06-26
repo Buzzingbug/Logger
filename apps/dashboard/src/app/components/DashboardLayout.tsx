@@ -6,6 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconLayoutDashboard, IconSettings, IconShieldOff, IconServerCog, IconCrown, IconSearch, IconBell, IconHelp, IconSparkles } from '@tabler/icons-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 
 export function DashboardLayout({ children, guildId }: { children: React.ReactNode, guildId: string }) {
   const [opened, { toggle }] = useDisclosure();
@@ -87,7 +88,7 @@ export function DashboardLayout({ children, guildId }: { children: React.ReactNo
 
       <AppShell.Navbar p="md">
         <Group mb="md" px="xs">
-          <IconSparkles size={24} color="var(--mantine-color-violet-6)" />
+          <Image src="/logo.png" alt="Logger Logo" width={32} height={32} />
           <Text fw={900} size="xl" lts={2}>LOGGER</Text>
         </Group>
         
