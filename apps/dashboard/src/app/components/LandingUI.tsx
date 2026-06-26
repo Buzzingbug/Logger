@@ -85,7 +85,7 @@ export function LandingUI({ isLoggedIn }: { isLoggedIn: boolean }) {
             }}
           >
             <Image 
-              src="/logo.png" 
+              src="/logo.jpg" 
               alt="Logger Logo" 
               width={120} 
               height={120} 
