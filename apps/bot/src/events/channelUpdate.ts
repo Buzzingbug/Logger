@@ -1,4 +1,4 @@
-import { Events, NonThreadGuildBasedChannel, DMChannel } from 'discord.js';
+import { Events, NonThreadGuildBasedChannel, DMChannel, OverwriteType } from 'discord.js';
 import { EventHandler } from '../engine/EventRegistry';
 import { ConfigManager } from '../managers/ConfigManager';
 import { FilterEngine } from '../engine/FilterEngine';
@@ -18,7 +18,6 @@ const handler: EventHandler<'channelUpdate'> = {
 
     const lang = config.otherOptions?.language || 'en-US';
     
-    // Check what changed
     let eventId = -1;
     let description = '';
     let title = '';
@@ -26,18 +25,65 @@ const handler: EventHandler<'channelUpdate'> = {
     const oldPerms = oldChannel.permissionOverwrites.cache;
     const newPerms = newChannel.permissionOverwrites.cache;
 
-    if (oldPerms.size < newPerms.size) {
-      eventId = 47; // Permissions Added
-      title = t('channel_perms_added_title', lang);
-      description = `**${t('name', lang)}:** <#${newChannel.id}>\n`;
-    } else if (oldPerms.size > newPerms.size) {
-      eventId = 48; // Permissions Deleted
-      title = t('channel_perms_deleted_title', lang);
-      description = `**${t('name', lang)}:** <#${newChannel.id}>\n`;
-    } else if (!oldPerms.equals(newPerms)) {
-      eventId = 49; // Permissions Updated
-      title = t('channel_perms_updated_title', lang);
-      description = `**${t('name', lang)}:** <#${newChannel.id}>\n`;
+    let permsChanged = false;
+    let diffLines: string[] = [];
+
+    const allIds = new Set([...oldPerms.keys(), ...newPerms.keys()]);
+
+    for (const id of allIds) {
+      const oldPerm = oldPerms.get(id);
+      const newPerm = newPerms.get(id);
+
+      if (!oldPerm && newPerm) {
+        permsChanged = true;
+        eventId = 47; // Permissions Added
+        title = t('channel_perms_added_title', lang);
+        
+        const typeStr = newPerm.type === OverwriteType.Role ? `<@&${id}>` : `<@${id}>`;
+        diffLines.push(`**Target:** ${typeStr}`);
+        
+        const allowed = newPerm.allow.toArray();
+        const denied = newPerm.deny.toArray();
+        if (allowed.length) diffLines.push(`✅ **Allowed:** \`${allowed.join(', ')}\``);
+        if (denied.length) diffLines.push(`❌ **Denied:** \`${denied.join(', ')}\``);
+        diffLines.push('');
+      } else if (oldPerm && !newPerm) {
+        permsChanged = true;
+        eventId = 48; // Permissions Deleted
+        title = t('channel_perms_deleted_title', lang);
+
+        const typeStr = oldPerm.type === OverwriteType.Role ? `<@&${id}>` : `<@${id}>`;
+        diffLines.push(`**Target:** ${typeStr} *(Removed)*\n`);
+      } else if (oldPerm && newPerm) {
+        const oldAllow = oldPerm.allow.toArray();
+        const newAllow = newPerm.allow.toArray();
+        const oldDeny = oldPerm.deny.toArray();
+        const newDeny = newPerm.deny.toArray();
+
+        const newlyAllowed = newAllow.filter(p => !oldAllow.includes(p));
+        const newlyDenied = newDeny.filter(p => !oldDeny.includes(p));
+        const newlyNeutral = [
+          ...oldAllow.filter(p => !newAllow.includes(p) && !newDeny.includes(p)), 
+          ...oldDeny.filter(p => !newDeny.includes(p) && !newAllow.includes(p))
+        ];
+
+        if (newlyAllowed.length || newlyDenied.length || newlyNeutral.length) {
+          permsChanged = true;
+          eventId = 49;
+          title = t('channel_perms_updated_title', lang);
+          const typeStr = newPerm.type === OverwriteType.Role ? `<@&${id}>` : `<@${id}>`;
+          diffLines.push(`**Target:** ${typeStr}`);
+          
+          if (newlyAllowed.length) diffLines.push(`✅ **Allowed:** \`${newlyAllowed.join(', ')}\``);
+          if (newlyDenied.length) diffLines.push(`❌ **Denied:** \`${newlyDenied.join(', ')}\``);
+          if (newlyNeutral.length) diffLines.push(`🔄 **Neutral:** \`${newlyNeutral.join(', ')}\``);
+          diffLines.push('');
+        }
+      }
+    }
+
+    if (permsChanged) {
+      description = `**${t('name', lang)}:** <#${newChannel.id}>\n\n${diffLines.join('\n')}`;
     } else {
       // Normal update
       let changed = false;
@@ -83,7 +129,7 @@ const handler: EventHandler<'channelUpdate'> = {
     });
 
     try {
-      const auditLogType = eventId === 29 ? 11 : 13; // 11 is CHANNEL_UPDATE, 13 is CHANNEL_OVERWRITE_CREATE/UPDATE/DELETE (we'll just use 11 for channel updates, and 13/14/15 for overwrites)
+      const auditLogType = eventId === 29 ? 11 : 13; // 11 is CHANNEL_UPDATE, 13 is CHANNEL_OVERWRITE_CREATE/UPDATE/DELETE
       const auditLogs = await newChannel.guild.fetchAuditLogs({ limit: 1 }).catch(() => null);
       
       const log = auditLogs?.entries.find(e => (e.target as any)?.id === newChannel.id);
