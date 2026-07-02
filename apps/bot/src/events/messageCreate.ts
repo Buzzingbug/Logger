@@ -10,21 +10,6 @@ const handler: EventHandler<'messageCreate'> = {
     // Save to our custom TTL map for edit/delete diffing
     client.cacheMessage(message);
 
-    // If the message has attachments, ping the files microservice
-    if (message.attachments.size > 0) {
-      for (const [id, attachment] of message.attachments) {
-        fetch('http://localhost:4000/api/v1/files/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            guildId: message.guildId,
-            channelId: message.channelId,
-            fileId: attachment.id,
-            fileUrl: attachment.url
-          })
-        }).catch(err => console.error(`Failed to send attachment to files service:`, err));
-      }
-    }
   }
 };
 

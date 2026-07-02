@@ -13,6 +13,7 @@ const client = new LoggerClient({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildBans,
   ],
   partials: [
     Partials.Message,

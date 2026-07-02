@@ -4,11 +4,46 @@ import { authOptions } from '../../../../../lib/auth';
 import { prisma, redis } from '@logger/db';
 import { GuildConfig } from '@logger/shared';
 
+async function isUserAdmin(guildId: string, accessToken?: string): Promise<boolean> {
+  if (!accessToken) return false;
+  
+  const cacheKey = `user_guilds:${accessToken}`;
+  let guildsData = await redis.get(cacheKey);
+  let guilds: any[] = [];
+  
+  if (guildsData) {
+    guilds = JSON.parse(guildsData);
+  } else {
+    try {
+      const res = await fetch('https://discord.com/api/v10/users/@me/guilds', {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+      if (res.ok) {
+        guilds = await res.json();
+        await redis.set(cacheKey, JSON.stringify(guilds), 'EX', 300); // 5 min cache
+      }
+    } catch (e) {
+      console.error('Failed to fetch user guilds', e);
+    }
+  }
+
+  const targetGuild = guilds.find((g: any) => g.id === guildId);
+  if (!targetGuild) return false;
+
+  const permissions = BigInt(targetGuild.permissions);
+  return (permissions & BigInt(0x8)) === BigInt(0x8) || (permissions & BigInt(0x20)) === BigInt(0x20); // Admin or Manage Server
+}
+
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id: guildId } = await params;
+  
+  // @ts-ignore
+  if (!(await isUserAdmin(guildId, session.accessToken))) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
 
   let config = await prisma.guildConfig.findUnique({
     where: { guildId }
@@ -45,6 +80,12 @@ export async function POST(req: any, { params }: { params: Promise<{ id: string 
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id: guildId } = await params;
+  
+  // @ts-ignore
+  if (!(await isUserAdmin(guildId, session.accessToken))) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   const body: Partial<GuildConfig> = await req.json();
 
   const mergedOtherOptions = {

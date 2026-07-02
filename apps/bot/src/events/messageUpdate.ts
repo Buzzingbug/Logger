@@ -10,8 +10,9 @@ import { LoggerClient } from '../client/LoggerClient';
 const handler: EventHandler<'messageUpdate'> = {
   name: 'messageUpdate',
   async execute(client: LoggerClient, oldMessage: Message | PartialMessage, newMessage: Message | PartialMessage) {
+    if (newMessage.partial) await newMessage.fetch().catch(() => null);
     if (!newMessage.guildId || newMessage.author?.bot) return;
-    if (oldMessage.content === newMessage.content) return; // Only log actual content edits
+    if (!oldMessage.partial && oldMessage.content === newMessage.content) return; // Only log actual content edits
 
     const config = await ConfigManager.getConfig(newMessage.guildId);
     if (!config) return;
