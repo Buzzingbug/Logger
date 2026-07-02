@@ -74,14 +74,17 @@ const handler: EventHandler<'messageDelete'> = {
     // 5. Build Embed
     const lang = (config.otherOptions as any)?.language || 'en-US';
     
-    let description = '';
+    const authorId = message.author?.id || cached?.authorId;
+    const authorDisplay = authorId ? `<@${authorId}>` : `*${t('unknown_user', lang)}*`;
+    
+    let description = `**${t('author', lang)}:** ${authorDisplay}\n`;
     
     if (content) {
-      description = t('message_deleted_desc', lang, { channel: `<#${message.channelId}>`, content });
+      description += t('message_deleted_desc', lang, { channel: `<#${message.channelId}>`, content });
     } else if (!hasMedia) {
-      description = t('message_deleted_no_content', lang, { channel: `<#${message.channelId}>` });
+      description += t('message_deleted_no_content', lang, { channel: `<#${message.channelId}>` });
     } else {
-      description = t('message_deleted_media_only', lang, { channel: `<#${message.channelId}>` });
+      description += t('message_deleted_media_only', lang, { channel: `<#${message.channelId}>` });
     }
 
     if (hasMedia) {
@@ -103,9 +106,9 @@ const handler: EventHandler<'messageDelete'> = {
     // 6. Dispatch via Webhook
     const webhook = await webhookManager.getWebhook(targetChannelId);
     if (webhook) {
-      const authorId = message.author?.id || cached?.authorId || t('unknown_user', lang);
+      const webhookAuthorText = authorId || t('unknown_user', lang);
       await webhook.send({ 
-        content: `🗑️ **${t('message_deleted_title', lang)}** | ${t('author', lang)} ID: \`${authorId}\``,
+        content: `🗑️ **${t('message_deleted_title', lang)}** | ${t('author', lang)} ID: \`${webhookAuthorText}\``,
         embeds: [embed] 
       }).catch(err => {
         if (err.code === 10015) {
