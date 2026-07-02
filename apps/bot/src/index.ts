@@ -57,6 +57,15 @@ client.once('ready', async () => {
       .setName('dashboard')
       .setDescription('Get a link to the logger dashboard')
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    new SlashCommandBuilder()
+      .setName('data-request')
+      .setDescription('Request a copy of all personal data we hold about you'),
+    new SlashCommandBuilder()
+      .setName('delete-my-data')
+      .setDescription('Request deletion of your personal data'),
+    new SlashCommandBuilder()
+      .setName('privacy')
+      .setDescription('View our privacy policy and data practices'),
   ];
 
   try {
